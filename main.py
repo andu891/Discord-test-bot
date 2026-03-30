@@ -1,0 +1,90 @@
+import discord
+from discord.ext import commands
+import logging
+from dotenv import load_dotenv
+import os
+
+
+load_dotenv()
+
+token = os.getenv("DISCORD_TOKEN")
+magu_role = "paks"
+
+handler = logging.FileHandler(filename="discord.log",encoding="utf-8",mode="w")
+intents = discord.Intents.default()
+intents.message_content = True
+intents.members = True
+
+bot = commands.Bot(command_prefix="!",intents=intents)
+
+@bot.event
+async def on_ready():
+    print(f"We are ready, {bot.user.name}")
+
+@bot.event
+async def on_member_join(member):
+    await member.send(f"Welcome, {member.name}")
+
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+    if "paks" in message.content.lower():
+        await message.delete()
+        await message.channel.send(f"{message.author.mention} magu")
+    await bot.process_commands(message)
+
+@bot.command()
+async def hello(_c):
+    await _c.send(f"Hello {_c.author.mention}!")
+
+
+@bot.command()
+async def dm(_c,*,msg):
+    await _c.author.send(msg)
+
+@bot.command()
+async def reply(_c):
+    await _c.reply("Replied!")
+
+
+
+@bot.command()
+async def poll(_c,*,question):
+    embed = discord.Embed(title="New Poll",description=question)
+    poll_message= await _c.send(embed=embed)
+    await poll_message.add_reaction("👍")
+    await poll_message.add_reaction("👎")
+
+
+@bot.command()
+async def assign(_c):
+    role = discord.utils.get(_c.guild.roles,name=magu_role)
+    if role:
+        await _c.author.add_roles(role)
+        await _c.send(f"{_c.author.mention} is now assigned {magu_role} role!")
+    else:
+        await _c.send("Role does not exist")
+
+
+@bot.command()
+async def remove(_c):
+    role = discord.utils.get(_c.guild.roles,name=magu_role)
+    if role:
+        await _c.author.remove_roles(role)
+        await _c.send(f"{_c.author.mention} has had {magu_role} role removed!")
+    else:
+        await _c.send("Role does not exist")
+
+    
+@bot.command()
+@commands.has_role(magu_role)
+async def munch(_c):
+    await _c.send("MMMM Munch Munch")
+
+@munch.error
+async def munch_error(_c,error):
+    await _c.send(f"{_c.author.mention},You aren't invited.")
+
+
+bot.run(token, log_handler=handler, log_level=logging.DEBUG)
