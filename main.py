@@ -9,12 +9,15 @@ load_dotenv()
 
 token = os.getenv("DISCORD_TOKEN")
 
+
 magu_role = "paks"
 target = "totallynotandresesaltaccount"
+log_channel = "deletion-log"
 
 handler = logging.FileHandler(filename="discord.log",encoding="utf-8",mode="w")
 intents = discord.Intents.default()
 intents.message_content = True
+intents.messages = True
 intents.members = True
 intents.voice_states = True
 
@@ -31,7 +34,6 @@ async def on_member_join(member):
     await member.send(f"Welcome, {member.name}")
 
 @bot.event
-
 async def on_message(message):
     if message.author == bot.user:
         return
@@ -46,9 +48,8 @@ async def on_voice_state_update(member,before,after):
     owner = list(filter(lambda user: user.name == "andu891" ,member.guild.members))[0]
     
   
-    if magu_role not in map(lambda x: x.name,member.roles): # only runs for members with the role
-        return 
-        
+    #if magu_role not in map(lambda x: x.name,member.roles): # only runs for members with the role
+    #    return     
     if member == bot.user: # Doesn't run for bot itself
         return
     if after.channel: # If the after has a channel try to join
@@ -62,8 +63,13 @@ async def on_voice_state_update(member,before,after):
         
 
 
-
-
+@bot.event
+async def on_message_delete(message):
+    if message.author == bot.user:
+        return
+    
+    modlog = list(filter(lambda channel:channel.name == log_channel,message.guild.channels))[0] # find the modlog channel
+    await modlog.send(f"{message.channel.name.upper()}   {message.author.name}: {message.clean_content}")
 
 
 
