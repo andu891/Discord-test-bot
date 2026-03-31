@@ -8,6 +8,7 @@ import os
 load_dotenv()
 
 token = os.getenv("DISCORD_TOKEN")
+
 magu_role = "paks"
 target = "totallynotandresesaltaccount"
 
@@ -19,6 +20,8 @@ intents.voice_states = True
 
 bot = commands.Bot(command_prefix="!",intents=intents)
 
+
+
 @bot.event
 async def on_ready():
     print(f"We are ready, {bot.user.name}")
@@ -28,6 +31,7 @@ async def on_member_join(member):
     await member.send(f"Welcome, {member.name}")
 
 @bot.event
+
 async def on_message(message):
     if message.author == bot.user:
         return
@@ -36,22 +40,28 @@ async def on_message(message):
         await message.channel.send(f"{message.author.mention} magu")
     await bot.process_commands(message)
 
-
 @bot.event
 async def on_voice_state_update(member,before,after):
     voice_state = member.guild.voice_client
-    if member.name != target:
+    owner = list(filter(lambda user: user.name == "andu891" ,member.guild.members))[0]
+    
+  
+    if magu_role not in map(lambda x: x.name,member.roles): # only runs for members with the role
+        return 
+        
+    if member == bot.user: # Doesn't run for bot itself
         return
-    if member == bot.user:
-        return
-    if after.channel:
+    if after.channel: # If the after has a channel try to join
         print(f"Trying to join {member.name}")
-        if before.channel and before.channel != after.channel:
+        if before.channel and before.channel != after.channel: # if the member switches channels leave the previous vc before joining
             await voice_state.disconnect()
-        await after.channel.connect(timeout=30.0,reconnect=True,self_deaf=True,self_mute=False)
+        await after.channel.connect(timeout=30.0,reconnect=True,self_deaf=True,self_mute=False) # connect to the members vc
+        await owner.send(f"{member.name} joined {after.channel}")
     else:
         await voice_state.disconnect()
         
+
+
 
 
 
