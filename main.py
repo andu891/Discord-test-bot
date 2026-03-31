@@ -9,11 +9,13 @@ load_dotenv()
 
 token = os.getenv("DISCORD_TOKEN")
 magu_role = "paks"
+target = "totallynotandresesaltaccount"
 
 handler = logging.FileHandler(filename="discord.log",encoding="utf-8",mode="w")
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
+intents.voice_states = True
 
 bot = commands.Bot(command_prefix="!",intents=intents)
 
@@ -33,6 +35,27 @@ async def on_message(message):
         await message.delete()
         await message.channel.send(f"{message.author.mention} magu")
     await bot.process_commands(message)
+
+
+@bot.event
+async def on_voice_state_update(member,before,after):
+    voice_state = member.guild.voice_client
+    if member.name != target:
+        return
+    if member == bot.user:
+        return
+    if after.channel:
+        print(f"Trying to join {member.name}")
+        if before.channel and before.channel != after.channel:
+            await voice_state.disconnect()
+        await after.channel.connect(timeout=30.0,reconnect=True,self_deaf=True,self_mute=False)
+    else:
+        await voice_state.disconnect()
+        
+
+
+
+
 
 @bot.command()
 async def hello(_c):
