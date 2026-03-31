@@ -18,3 +18,162 @@
 [2026-03-31 16:04:38] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': 'GUILD_MEMBERS_CHUNK', 's': 3, 'op': 0, 'd': {'nonce': '140fb473c8a81acb99e3ea0c61295866', 'members': [{'user': {'username': 'andu891', 'public_flags': 128, 'primary_guild': None, 'id': '473196837285920778', 'global_name': 'Andrei Mikhailovich Sinilsky', 'display_name_styles': None, 'display_name': 'Andrei Mikhailovich Sinilsky', 'discriminator': '0', 'collectibles': None, 'bot': False, 'avatar_decoration_data': None, 'avatar': '118a591906bb1bf8f8e8825024565eb7'}, 'roles': ['1488221544747634770'], 'premium_since': None, 'pending': False, 'nick': None, 'mute': False, 'joined_at': '2026-03-30T16:10:10.690000+00:00', 'flags': 0, 'deaf': False, 'communication_disabled_until': None, 'banner': None, 'avatar': None}, {'user': {'username': 'totallynotandresesaltaccount', 'public_flags': 0, 'primary_guild': None, 'id': '814935873862631445', 'global_name': None, 'display_name_styles': None, 'display_name': None, 'discriminator': '0', 'collectibles': None, 'bot': False, 'avatar_decoration_data': None, 'avatar': None}, 'roles': [], 'premium_since': None, 'pending': False, 'nick': None, 'mute': False, 'joined_at': '2026-03-30T16:50:11.922000+00:00', 'flags': 0, 'deaf': False, 'communication_disabled_until': None, 'banner': None, 'avatar': None}, {'user': {'username': 'Andres Bot', 'public_flags': 0, 'primary_guild': None, 'id': '1200845618835357736', 'global_name': None, 'display_name_styles': None, 'display_name': None, 'discriminator': '8880', 'collectibles': None, 'bot': True, 'avatar_decoration_data': None, 'avatar': None}, 'roles': ['1488213944790290636'], 'premium_since': None, 'pending': False, 'nick': None, 'mute': False, 'joined_at': '2026-03-30T16:30:54.241000+00:00', 'flags': 1, 'deaf': False, 'communication_disabled_until': None, 'banner': None, 'avatar': None}], 'guild_id': '1488208728732991520', 'chunk_index': 0, 'chunk_count': 1}}
 [2026-03-31 16:04:38] [DEBUG   ] discord.client: Dispatching event socket_event_type
 [2026-03-31 16:04:38] [DEBUG   ] discord.state: Processed a chunk for 3 members in guild ID 1488208728732991520.
+[2026-03-31 16:04:39] [DEBUG   ] discord.client: Dispatching event guild_available
+[2026-03-31 16:04:39] [DEBUG   ] discord.client: Dispatching event ready
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': 'VOICE_STATE_UPDATE', 's': 4, 'op': 0, 'd': {'member': {'user': {'username': 'andu891', 'public_flags': 128, 'primary_guild': None, 'id': '473196837285920778', 'global_name': 'Andrei Mikhailovich Sinilsky', 'display_name_styles': None, 'display_name': 'Andrei Mikhailovich Sinilsky', 'discriminator': '0', 'collectibles': None, 'bot': False, 'avatar_decoration_data': None, 'avatar': '118a591906bb1bf8f8e8825024565eb7'}, 'roles': ['1488221544747634770'], 'premium_since': None, 'pending': False, 'nick': None, 'mute': False, 'joined_at': '2026-03-30T16:10:10.690000+00:00', 'flags': 0, 'deaf': False, 'communication_disabled_until': None, 'banner': None, 'avatar': None}, 'user_id': '473196837285920778', 'suppress': False, 'session_id': '80da530fde10e680263a668db0edaa18', 'self_video': False, 'self_mute': False, 'self_deaf': False, 'request_to_speak_timestamp': None, 'mute': False, 'guild_id': '1488208728732991520', 'discoverable': True, 'deaf': False, 'channel_id': '1488208730326565049'}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.client: Dispatching event socket_event_type
+[2026-03-31 16:04:43] [DEBUG   ] discord.client: Dispatching event voice_state_update
+[2026-03-31 16:04:43] [INFO    ] discord.voice_state: Connecting to voice...
+[2026-03-31 16:04:43] [INFO    ] discord.voice_state: Starting voice handshake... (connection attempt 1)
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Updating our voice state to {'op': 4, 'd': {'guild_id': 1488208728732991520, 'channel_id': 1488208730326565049, 'self_mute': False, 'self_deaf': True}}.
+[2026-03-31 16:04:43] [DEBUG   ] discord.voice_state: Connection state changed to set_guild_voice_state
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': 'VOICE_CHANNEL_START_TIME_UPDATE', 's': 5, 'op': 0, 'd': {'voice_start_time': 1774962285, 'id': '1488208730326565049', 'guild_id': '1488208728732991520'}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.client: Dispatching event socket_event_type
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Unknown event VOICE_CHANNEL_START_TIME_UPDATE.
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': 'VOICE_STATE_UPDATE', 's': 6, 'op': 0, 'd': {'member': {'user': {'username': 'Andres Bot', 'public_flags': 0, 'primary_guild': None, 'id': '1200845618835357736', 'global_name': None, 'display_name_styles': None, 'display_name': None, 'discriminator': '8880', 'collectibles': None, 'bot': True, 'avatar_decoration_data': None, 'avatar': None}, 'roles': ['1488213944790290636'], 'premium_since': None, 'pending': False, 'nick': None, 'mute': False, 'joined_at': '2026-03-30T16:30:54.241000+00:00', 'flags': 1, 'deaf': False, 'communication_disabled_until': None, 'banner': None, 'avatar': None}, 'user_id': '1200845618835357736', 'suppress': False, 'session_id': '450128a2a94f8dd05f3526d7832a2f41', 'self_video': False, 'self_mute': False, 'self_deaf': True, 'request_to_speak_timestamp': None, 'mute': False, 'guild_id': '1488208728732991520', 'deaf': False, 'channel_id': '1488208730326565049'}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.client: Dispatching event socket_event_type
+[2026-03-31 16:04:43] [DEBUG   ] discord.client: Dispatching event voice_state_update
+[2026-03-31 16:04:43] [DEBUG   ] discord.voice_state: Connection state changed to got_voice_state_update
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': 'VOICE_SERVER_UPDATE', 's': 7, 'op': 0, 'd': {'token': 'b66040b67196d7db', 'guild_id': '1488208728732991520', 'endpoint': 'c-hel01-060ae426.discord.media:2053'}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.client: Dispatching event socket_event_type
+[2026-03-31 16:04:43] [DEBUG   ] discord.voice_state: Connection state changed to got_both_voice_updates
+[2026-03-31 16:04:43] [INFO    ] discord.voice_state: Voice handshake complete. Endpoint found: c-hel01-060ae426.discord.media:2053
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Sending voice websocket frame: {'op': 0, 'd': {'server_id': '1488208728732991520', 'user_id': '1200845618835357736', 'session_id': '450128a2a94f8dd05f3526d7832a2f41', 'token': 'b66040b67196d7db', 'max_dave_protocol_version': 1}}.
+[2026-03-31 16:04:43] [DEBUG   ] discord.voice_state: Connection state changed to websocket_connected
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket frame received: {'op': 8, 'd': {'v': 8, 'heartbeat_interval': 13750}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket frame received: {'op': 2, 'd': {'streams': [{'type': 'video', 'ssrc': 696, 'rtx_ssrc': 697, 'rid': '', 'quality': 0, 'active': False}], 'ssrc': 695, 'port': 19304, 'modes': ['aead_aes256_gcm_rtpsize', 'aead_xchacha20_poly1305_rtpsize'], 'ip': '104.29.155.181', 'experiments': ['fixed_keyframe_interval']}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Connecting to voice socket
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Sending ip discovery packet
+[2026-03-31 16:04:43] [DEBUG   ] discord.voice_state: Registering socket listener callback <function DiscordVoiceWebSocket.discover_ip.<locals>.get_ip_packet at 0x000001E9CCAB2200>
+[2026-03-31 16:04:43] [DEBUG   ] discord.voice_state: Unregistering socket listener callback <function DiscordVoiceWebSocket.discover_ip.<locals>.get_ip_packet at 0x000001E9CCAB2200>
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Received ip discovery packet: b'\x00\x02\x00F\x00\x00\x02\xb784.50.26.209\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xf7r'
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: detected ip: 84.50.26.209 port: 63346
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: received supported encryption modes: aead_xchacha20_poly1305_rtpsize
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Sending voice websocket frame: {'op': 1, 'd': {'protocol': 'udp', 'data': {'address': '84.50.26.209', 'port': 63346, 'mode': 'aead_xchacha20_poly1305_rtpsize'}}}.
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: selected the voice protocol for use (aead_xchacha20_poly1305_rtpsize)
+[2026-03-31 16:04:43] [DEBUG   ] discord.voice_state: Connection state changed to got_ip_discovery
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket frame received: {'seq': 0, 'op': 11, 'd': {'user_ids': ['473196837285920778']}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket frame received: {'seq': 1, 'op': 18, 'd': {'user_id': '473196837285920778', 'flags': 2}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket frame received: {'seq': 2, 'op': 20, 'd': {'user_id': '473196837285920778', 'platform': 0}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket frame received: {'op': 4, 'd': {'video_codec': 'H264', 'secure_frames_version': 1, 'secret_key': [60, 189, 61, 93, 108, 4, 103, 201, 230, 94, 139, 132, 228, 13, 180, 166, 77, 36, 154, 70, 201, 108, 228, 169, 250, 245, 194, 144, 222, 135, 57, 48], 'mode': 'aead_xchacha20_poly1305_rtpsize', 'media_session_id': 'd8bb26eeed583d83aa59007f0473579e', 'dave_protocol_version': 1, 'audio_codec': 'opus'}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: received secret key for voice connection
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Sending voice websocket frame: {'op': 5, 'd': {'speaking': 0, 'delay': 0, 'ssrc': 695}}.
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Sending voice websocket binary frame: opcode=26 size=393
+[2026-03-31 16:04:43] [DEBUG   ] discord.voice_state: Connection state changed to connected
+[2026-03-31 16:04:43] [INFO    ] discord.voice_state: Voice connection complete.
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket frame received: {'seq': 3, 'op': 15, 'd': {'any': 100}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket binary frame received: 74 bytes; seq=4 op=25
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Set MLS external sender
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket frame received: {'seq': 5, 'op': 11, 'd': {'user_ids': ['473196837285920778']}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket frame received: {'seq': 6, 'op': 18, 'd': {'user_id': '473196837285920778', 'flags': 2}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket frame received: {'seq': 7, 'op': 20, 'd': {'user_id': '473196837285920778', 'platform': 0}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': 'VOICE_SERVER_UPDATE', 's': 8, 'op': 0, 'd': {'token': 'b66040b67196d7db', 'guild_id': '1488208728732991520', 'endpoint': 'c-hel01-060ae426.discord.media:2053'}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.client: Dispatching event socket_event_type
+[2026-03-31 16:04:43] [DEBUG   ] discord.voice_state: Voice server update, closing old voice websocket
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Received voice WSMessage(type=<WSMsgType.CLOSING: 256>, data=None, extra=None)
+[2026-03-31 16:04:43] [INFO    ] discord.voice_state: Disconnected from voice by force... potentially reconnecting.
+[2026-03-31 16:04:43] [DEBUG   ] discord.voice_state: Connection state changed to got_voice_server_update
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Sending voice websocket frame: {'op': 0, 'd': {'server_id': '1488208728732991520', 'user_id': '1200845618835357736', 'session_id': '450128a2a94f8dd05f3526d7832a2f41', 'token': 'b66040b67196d7db', 'max_dave_protocol_version': 1}}.
+[2026-03-31 16:04:43] [DEBUG   ] discord.voice_state: Connection state changed to websocket_connected
+[2026-03-31 16:04:43] [DEBUG   ] discord.voice_state: Connection state changed to got_ip_discovery
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket frame received: {'op': 8, 'd': {'v': 8, 'heartbeat_interval': 13750}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket frame received: {'op': 2, 'd': {'streams': [{'type': 'video', 'ssrc': 704, 'rtx_ssrc': 705, 'rid': '', 'quality': 0, 'active': False}], 'ssrc': 703, 'port': 19304, 'modes': ['aead_aes256_gcm_rtpsize', 'aead_xchacha20_poly1305_rtpsize'], 'ip': '104.29.155.181', 'experiments': ['fixed_keyframe_interval']}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Connecting to voice socket
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Sending ip discovery packet
+[2026-03-31 16:04:43] [DEBUG   ] discord.voice_state: Registering socket listener callback <function DiscordVoiceWebSocket.discover_ip.<locals>.get_ip_packet at 0x000001E9CBA7E8E0>
+[2026-03-31 16:04:43] [DEBUG   ] discord.voice_state: Unregistering socket listener callback <function DiscordVoiceWebSocket.discover_ip.<locals>.get_ip_packet at 0x000001E9CBA7E8E0>
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Received ip discovery packet: b'\x00\x02\x00F\x00\x00\x02\xbf84.50.26.209\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xf7r'
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: detected ip: 84.50.26.209 port: 63346
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: received supported encryption modes: aead_xchacha20_poly1305_rtpsize
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Sending voice websocket frame: {'op': 1, 'd': {'protocol': 'udp', 'data': {'address': '84.50.26.209', 'port': 63346, 'mode': 'aead_xchacha20_poly1305_rtpsize'}}}.
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: selected the voice protocol for use (aead_xchacha20_poly1305_rtpsize)
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket frame received: {'seq': 0, 'op': 11, 'd': {'user_ids': ['473196837285920778']}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket frame received: {'seq': 1, 'op': 18, 'd': {'user_id': '473196837285920778', 'flags': 2}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket frame received: {'seq': 2, 'op': 20, 'd': {'user_id': '473196837285920778', 'platform': 0}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket frame received: {'op': 4, 'd': {'video_codec': 'H264', 'secure_frames_version': 1, 'secret_key': [165, 110, 239, 34, 131, 87, 111, 207, 13, 181, 119, 149, 77, 47, 143, 51, 107, 189, 226, 240, 109, 134, 67, 20, 157, 2, 0, 12, 104, 52, 205, 191], 'mode': 'aead_xchacha20_poly1305_rtpsize', 'media_session_id': 'd8bb26eeed583d83aa59007f0473579e', 'dave_protocol_version': 1, 'audio_codec': 'opus'}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: received secret key for voice connection
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Sending voice websocket frame: {'op': 5, 'd': {'speaking': 0, 'delay': 0, 'ssrc': 703}}.
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Sending voice websocket binary frame: opcode=26 size=392
+[2026-03-31 16:04:43] [DEBUG   ] discord.voice_state: Connection state changed to connected
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket frame received: {'seq': 3, 'op': 15, 'd': {'any': 100}}
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket binary frame received: 74 bytes; seq=4 op=25
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Set MLS external sender
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket binary frame received: 500 bytes; seq=5 op=27
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Sending voice websocket binary frame: opcode=28 size=1160
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: MLS proposals processed
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: Voice websocket binary frame received: 208 bytes; seq=6 op=29
+[2026-03-31 16:04:43] [DEBUG   ] discord.gateway: MLS commit processed for transition id 0
+[2026-03-31 16:04:43] [DEBUG   ] discord.http: POST https://discord.com/api/v10/users/@me/channels with {"recipient_id":473196837285920778} has returned 200
+[2026-03-31 16:04:43] [DEBUG   ] discord.http: POST /users/@me/channels has found its initial rate limit bucket hash (3f1ecb90c49938368145d0f8794b2707).
+[2026-03-31 16:04:43] [DEBUG   ] discord.http: POST https://discord.com/api/v10/users/@me/channels has received {'id': '1488229113113350219', 'type': 1, 'last_message_id': '1488520282393018542', 'flags': 0, 'recipients': [{'id': '473196837285920778', 'username': 'andu891', 'avatar': '118a591906bb1bf8f8e8825024565eb7', 'discriminator': '0', 'public_flags': 128, 'flags': 128, 'banner': None, 'accent_color': 2303016, 'global_name': 'Andrei Mikhailovich Sinilsky', 'avatar_decoration_data': None, 'collectibles': None, 'display_name_styles': None, 'banner_color': '#232428', 'clan': None, 'primary_guild': None}]}
+[2026-03-31 16:04:44] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': 'MESSAGE_CREATE', 's': 9, 'op': 0, 'd': {'type': 0, 'tts': False, 'timestamp': '2026-03-31T13:04:45.855000+00:00', 'pinned': False, 'nonce': '3876017261530370123', 'mentions': [], 'mention_roles': [], 'mention_everyone': False, 'id': '1488524456409174136', 'flags': 0, 'embeds': [], 'edited_timestamp': None, 'content': 'andu891 joined General', 'components': [], 'channel_type': 1, 'channel_id': '1488229113113350219', 'author': {'username': 'Andres Bot', 'public_flags': 0, 'primary_guild': None, 'id': '1200845618835357736', 'global_name': None, 'display_name_styles': None, 'discriminator': '8880', 'collectibles': None, 'clan': None, 'bot': True, 'avatar_decoration_data': None, 'avatar': None}, 'attachments': []}}
+[2026-03-31 16:04:44] [DEBUG   ] discord.client: Dispatching event socket_event_type
+[2026-03-31 16:04:44] [DEBUG   ] discord.client: Dispatching event message
+[2026-03-31 16:04:44] [DEBUG   ] discord.http: POST https://discord.com/api/v10/channels/1488229113113350219/messages with {"content":"andu891 joined General","components":[],"nonce":"3876017261530370123","enforce_nonce":true,"tts":false} has returned 200
+[2026-03-31 16:04:44] [DEBUG   ] discord.http: POST /channels/{channel_id}/messages has found its initial rate limit bucket hash (62df3a8bf3cb0dd93018dd80d06039f6).
+[2026-03-31 16:04:44] [DEBUG   ] discord.http: POST https://discord.com/api/v10/channels/1488229113113350219/messages has received {'type': 0, 'content': 'andu891 joined General', 'mentions': [], 'mention_roles': [], 'attachments': [], 'embeds': [], 'timestamp': '2026-03-31T13:04:45.855000+00:00', 'edited_timestamp': None, 'flags': 0, 'components': [], 'id': '1488524456409174136', 'channel_id': '1488229113113350219', 'author': {'id': '1200845618835357736', 'username': 'Andres Bot', 'avatar': None, 'discriminator': '8880', 'public_flags': 0, 'flags': 0, 'bot': True, 'banner': None, 'accent_color': None, 'global_name': None, 'avatar_decoration_data': None, 'collectibles': None, 'display_name_styles': None, 'banner_color': None, 'clan': None, 'primary_guild': None}, 'pinned': False, 'mention_everyone': False, 'tts': False, 'nonce': '3876017261530370123'}
+[2026-03-31 16:04:46] [DEBUG   ] discord.gateway: Voice websocket frame received: {'seq': 7, 'op': 5, 'd': {'user_id': '473196837285920778', 'ssrc': 698, 'speaking': 1}}
+[2026-03-31 16:04:46] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': 'VOICE_STATE_UPDATE', 's': 10, 'op': 0, 'd': {'member': {'user': {'username': 'andu891', 'public_flags': 128, 'primary_guild': None, 'id': '473196837285920778', 'global_name': 'Andrei Mikhailovich Sinilsky', 'display_name_styles': None, 'display_name': 'Andrei Mikhailovich Sinilsky', 'discriminator': '0', 'collectibles': None, 'bot': False, 'avatar_decoration_data': None, 'avatar': '118a591906bb1bf8f8e8825024565eb7'}, 'roles': ['1488221544747634770'], 'premium_since': None, 'pending': False, 'nick': None, 'mute': False, 'joined_at': '2026-03-30T16:10:10.690000+00:00', 'flags': 0, 'deaf': False, 'communication_disabled_until': None, 'banner': None, 'avatar': None}, 'user_id': '473196837285920778', 'suppress': False, 'session_id': '80da530fde10e680263a668db0edaa18', 'self_video': False, 'self_mute': False, 'self_deaf': False, 'request_to_speak_timestamp': None, 'mute': False, 'guild_id': '1488208728732991520', 'discoverable': True, 'deaf': False, 'channel_id': None}}
+[2026-03-31 16:04:46] [DEBUG   ] discord.client: Dispatching event socket_event_type
+[2026-03-31 16:04:46] [DEBUG   ] discord.client: Dispatching event voice_state_update
+[2026-03-31 16:04:46] [INFO    ] discord.voice_state: The voice handshake is being terminated for Channel ID 1488208730326565049 (Guild ID 1488208728732991520)
+[2026-03-31 16:04:46] [DEBUG   ] discord.voice_state: Connection state changed to disconnected
+[2026-03-31 16:04:46] [DEBUG   ] discord.gateway: Updating our voice state to {'op': 4, 'd': {'guild_id': 1488208728732991520, 'channel_id': None, 'self_mute': False, 'self_deaf': False}}.
+[2026-03-31 16:04:46] [DEBUG   ] discord.gateway: Received voice WSMessage(type=<WSMsgType.CLOSING: 256>, data=None, extra=None)
+[2026-03-31 16:04:46] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': 'VOICE_STATE_UPDATE', 's': 11, 'op': 0, 'd': {'member': {'user': {'username': 'Andres Bot', 'public_flags': 0, 'primary_guild': None, 'id': '1200845618835357736', 'global_name': None, 'display_name_styles': None, 'display_name': None, 'discriminator': '8880', 'collectibles': None, 'bot': True, 'avatar_decoration_data': None, 'avatar': None}, 'roles': ['1488213944790290636'], 'premium_since': None, 'pending': False, 'nick': None, 'mute': False, 'joined_at': '2026-03-30T16:30:54.241000+00:00', 'flags': 1, 'deaf': False, 'communication_disabled_until': None, 'banner': None, 'avatar': None}, 'user_id': '1200845618835357736', 'suppress': False, 'session_id': '450128a2a94f8dd05f3526d7832a2f41', 'self_video': False, 'self_mute': False, 'self_deaf': True, 'request_to_speak_timestamp': None, 'mute': False, 'guild_id': '1488208728732991520', 'deaf': False, 'channel_id': None}}
+[2026-03-31 16:04:46] [DEBUG   ] discord.client: Dispatching event socket_event_type
+[2026-03-31 16:04:46] [DEBUG   ] discord.client: Dispatching event voice_state_update
+[2026-03-31 16:04:46] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': 'VOICE_CHANNEL_START_TIME_UPDATE', 's': 12, 'op': 0, 'd': {'voice_start_time': None, 'id': '1488208730326565049', 'guild_id': '1488208728732991520'}}
+[2026-03-31 16:04:46] [DEBUG   ] discord.client: Dispatching event socket_event_type
+[2026-03-31 16:04:46] [DEBUG   ] discord.gateway: Unknown event VOICE_CHANNEL_START_TIME_UPDATE.
+[2026-03-31 16:04:46] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': 'VOICE_CHANNEL_STATUS_UPDATE', 's': 13, 'op': 0, 'd': {'status': None, 'id': '1488208730326565049', 'guild_id': '1488208728732991520'}}
+[2026-03-31 16:04:46] [DEBUG   ] discord.client: Dispatching event socket_event_type
+[2026-03-31 16:04:46] [DEBUG   ] discord.gateway: Unknown event VOICE_CHANNEL_STATUS_UPDATE.
+[2026-03-31 16:05:18] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:05:18] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:06:00] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:06:00] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:06:41] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:06:41] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:07:22] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:07:22] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:08:03] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:08:03] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:08:45] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:08:45] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:09:26] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:09:26] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:10:07] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:10:07] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:10:48] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:10:49] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:11:30] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:11:30] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:12:11] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:12:11] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:12:52] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:12:52] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:13:33] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:13:34] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:14:15] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:14:15] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:14:56] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:14:56] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:15:37] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:15:37] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:16:18] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:16:19] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:17:00] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:17:00] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:17:41] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:17:41] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:18:22] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:18:22] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:19:03] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:19:04] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:19:45] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:19:45] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:20:26] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:20:26] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
+[2026-03-31 16:21:07] [DEBUG   ] discord.gateway: Keeping shard ID None websocket alive with sequence 13.
+[2026-03-31 16:21:07] [DEBUG   ] discord.gateway: For Shard ID None: WebSocket Event: {'t': None, 's': None, 'op': 11, 'd': None}
