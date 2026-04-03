@@ -3,14 +3,16 @@ from discord.ext import commands
 import logging
 from dotenv import load_dotenv
 import os
-import json
+from discord import EventStatus
+from random import randint
+
 
 
 load_dotenv()
 
 token = os.getenv("DISCORD_TOKEN")
 
-var_path = "variables.json" # path of all the variables
+G={"general":"general","targets":[]}
 
 handler = logging.FileHandler(filename="discord.log",encoding="utf-8",mode="w")
 intents = discord.Intents.default()
@@ -18,67 +20,67 @@ intents.message_content = True
 intents.messages = True
 intents.members = True
 intents.voice_states = True
+intents.guild_scheduled_events = True
 
 bot = commands.Bot(command_prefix="a!",intents=intents)
+
+
 
 
 
 @bot.event
 async def on_ready():
     print(f"We are ready, {bot.user.name}")
+    info = await discord.Client.application_info(bot)
+    G["owner"] = info.owner
+    
 
 @bot.event
-async def on_member_join(member):
-    await member.send(f"Welcome, {member.name}")
-
-@bot.event
-async def on_message(message):
+async def on_message(message): # 🗿
     if message.author == bot.user:
         return
-    if "paks" in message.content.lower():
-        await message.delete()
-        await message.channel.send(f"{message.author.mention} magu")
+    if randint(1,100) == 1:
+        await message.add_reaction("🗿")
     await bot.process_commands(message)
 
 @bot.event
-async def on_voice_state_update(member,before,after):
-    info = await discord.Client.application_info(bot)
-    owner = info.owner
-    targets = json.load(open(var_path))["targets"]
-    
+async def on_voice_state_update(member,before,after): # microwave
+    targets = G["targets"]
+    voice_client = member.guild.voice_client
     
   
-    if member.name  in targets and member != bot.user and after.channel: # for the following and microwave function
-    
+    if member.name  in targets and member != bot.user: # following and microwave function
+        
 
-        print(f"Trying to join {member.name}")
-        if before.channel and before.channel != after.channel: # Leave when the member leaves
-            voice_client.pause()
-            if member.guild.voice_client:
-                await member.guild.voice_client.disconnect()
+        if not voice_client:# if the bot isn't connected to a channel connect it
+            print(f"Trying to join {member.name}")
+            voice_client = await after.channel.connect(timeout=30.0,reconnect=True,self_deaf=True,self_mute=False) 
+        
+        else:# updates the bots voice channel to the members
+            await member.guild.change_voice_state(channel=after.channel,self_deaf=True,self_mute=False)# automatically leaves when channel is null
 
-        voice_client = await after.channel.connect(timeout=30.0,reconnect=True,self_deaf=True,self_mute=False) # connect to the members vc
+        
 
-        if voice_client.is_paused():
-            voice_client.resume()
-            
-        if not voice_client.is_playing():
+        if not voice_client.is_playing():# if the audio isn't playing play it 
             audio = discord.FFmpegPCMAudio(source="sound/microwave.mp3",executable='sound/ffmpeg/bin/ffmpeg.exe',pipe=False)
             voice_client.play(audio,signal_type="music")
-        
+    
+@bot.event
+async def on_scheduled_event_update(before,after): # Features: Event start message 
+    print(after.status)
+    print(before.status)
+    if not before.status == EventStatus.active and after.status == EventStatus.active: # when the event has just started find general and send the message
+        general_channel_name = G["general"]
+        general_channel = list(filter(lambda channel: channel.name == general_channel_name,after.guild.channels))[0]
+        print("started")
+        await general_channel.send(f"{after.guild.default_role} {after.name} on alustanud!!!")
 
-        await owner.send(f"{member.name} joined {after.channel}")
-
-
-        
-
-
-    else:
-        await member.guild.voice_client.disconnect()
+    
         
 
 @bot.command()
 async def play(_c): # Plays the song
+    #TODO: Make this actually use youtube links
     audio = discord.FFmpegPCMAudio(source="sound/song.mp3",executable="sound/ffmpeg/bin/ffmpeg.exe",pipe=False)
     _c.guild.voice_client.play(audio,signal_type="music")
     await _c.send(f"Playing song ")
@@ -114,9 +116,8 @@ async def send(_c, *, msg):
 
 @bot.command()
 async def report(_c,*,msg):
-    info = await discord.Client.application_info(bot)
-    await _c.send(f"Sent report to the owner of this bot - {info.owner}")
-    await info.owner.send(f"{_c.author} send message:\n {msg}")
+    await _c.send(f"Sent report to the owner of this bot - {G['owner'].name}")
+    await G["owner"].send(f"{_c.author} sent message:\n {msg}")
 
 @bot.command()
 async def join(_c): # Joins the authors vc
@@ -155,9 +156,7 @@ async def poll(_c,*,question):
 
 
 async def report_error( error):
-    info = await discord.Client.application_info(bot)
-    owner = info.owner
-    await owner.send(error)
+    await G["owner"].send(error)
     print("sent")
 
 
