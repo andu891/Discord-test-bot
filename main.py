@@ -3,16 +3,14 @@ from discord.ext import commands
 import logging
 from dotenv import load_dotenv
 import os
+import json
 
 
 load_dotenv()
 
 token = os.getenv("DISCORD_TOKEN")
 
-
-magu_role = "paks"
-target = "totallynotandresesaltaccount"
-log_channel = "deletion-log"
+var_path = "variables.json" # path of all the variables
 
 handler = logging.FileHandler(filename="discord.log",encoding="utf-8",mode="w")
 intents = discord.Intents.default()
@@ -21,7 +19,7 @@ intents.messages = True
 intents.members = True
 intents.voice_states = True
 
-bot = commands.Bot(command_prefix="!",intents=intents)
+bot = commands.Bot(command_prefix="a!",intents=intents)
 
 
 
@@ -44,51 +42,111 @@ async def on_message(message):
 
 @bot.event
 async def on_voice_state_update(member,before,after):
-    voice_state = member.guild.voice_client
-    owner = list(filter(lambda user: user.name == "andu891" ,member.guild.members))[0]
+    info = await discord.Client.application_info(bot)
+    owner = info.owner
+    targets = json.load(open(var_path))["targets"]
+    
     
   
-    #if magu_role not in map(lambda x: x.name,member.roles): # only runs for members with the role
-    #    return     
-    if member == bot.user: # Doesn't run for bot itself
-        return
-    if after.channel: # If the after has a channel try to join
+    if member.name  in targets and member != bot.user and after.channel: # for the following and microwave function
+    
+
         print(f"Trying to join {member.name}")
-        if before.channel and before.channel != after.channel: # if the member switches channels leave the previous vc before joining
-            await voice_state.disconnect()
-        await after.channel.connect(timeout=30.0,reconnect=True,self_deaf=True,self_mute=False) # connect to the members vc
+        if before.channel and before.channel != after.channel: # Leave when the member leaves
+            voice_client.pause()
+            if member.guild.voice_client:
+                await member.guild.voice_client.disconnect()
+
+        voice_client = await after.channel.connect(timeout=30.0,reconnect=True,self_deaf=True,self_mute=False) # connect to the members vc
+
+        if voice_client.is_paused():
+            voice_client.resume()
+            
+        if not voice_client.is_playing():
+            audio = discord.FFmpegPCMAudio(source="sound/microwave.mp3",executable='sound/ffmpeg/bin/ffmpeg.exe',pipe=False)
+            voice_client.play(audio,signal_type="music")
+        
+
         await owner.send(f"{member.name} joined {after.channel}")
-    else:
-        await voice_state.disconnect()
+
+
         
 
 
-@bot.event
-async def on_message_delete(message):
-    if message.author == bot.user:
-        return
+    else:
+        await member.guild.voice_client.disconnect()
+        
+
+@bot.command()
+async def play(_c): # Plays the song
+    audio = discord.FFmpegPCMAudio(source="sound/song.mp3",executable="sound/ffmpeg/bin/ffmpeg.exe",pipe=False)
+    _c.guild.voice_client.play(audio,signal_type="music")
+    await _c.send(f"Playing song ")
     
-    modlog = list(filter(lambda channel:channel.name == log_channel,message.guild.channels))[0] # find the modlog channel
-    await modlog.send(f"{message.channel.name.upper()}   {message.author.name}: {message.clean_content}")
+@play.error
+async def play_error(_c,error):
+    await report_error(error)
+
+@bot.command()
+async def stop(_c): # Stops the song
+    _c.guild.voice_client.stop()
+
+
+@bot.command()
+async def pause(_c): # Pauses the song
+    _c.guild.voice_client.pause()
+
+
+@bot.command()
+async def resume(_c): # Resumes the song
+    _c.guild.voice_client.resume()
+
+@bot.command()
+async def send(_c, *, msg):
+    id = msg.split()[0]
+    print(id, msg)
+    target =discord.Client.fetch_user(bot,int(id))
+    await _c.send(f"Sent message to {target.name}")
+    await target.send(" ".join(msg.split()[1:]))
+
 
 
 
 @bot.command()
-async def hello(_c):
+async def report(_c,*,msg):
+    info = await discord.Client.application_info(bot)
+    await _c.send(f"Sent report to the owner of this bot - {info.owner}")
+    await info.owner.send(f"{_c.author} send message:\n {msg}")
+
+@bot.command()
+async def join(_c): # Joins the authors vc
+    await _c.channel.send(f"Joining {_c.author.voice.channel.name}")
+    await _c.author.voice.channel.connect(timeout=30.0,reconnect=True,self_deaf=True,self_mute=False)
+@join.error
+async def join_error(_c, error):
+    await report_error(error)
+
+@bot.command()
+async def leave(_c):# leaves vc
+    await _c.guild.voice_client.disconnect()
+
+
+@bot.command()
+async def hello(_c): # greets author
     await _c.send(f"Hello {_c.author.mention}!")
 
 
 @bot.command()
-async def dm(_c,*,msg):
+async def dm(_c,*,msg): # dm's author
     await _c.author.send(msg)
 
 @bot.command()
-async def reply(_c):
+async def reply(_c): # replies author
     await _c.reply("Replied!")
 
 
 
-@bot.command()
+@bot.command() # creates a poll with reactions
 async def poll(_c,*,question):
     embed = discord.Embed(title="New Poll",description=question)
     poll_message= await _c.send(embed=embed)
@@ -96,34 +154,11 @@ async def poll(_c,*,question):
     await poll_message.add_reaction("👎")
 
 
-@bot.command()
-async def assign(_c):
-    role = discord.utils.get(_c.guild.roles,name=magu_role)
-    if role:
-        await _c.author.add_roles(role)
-        await _c.send(f"{_c.author.mention} is now assigned {magu_role} role!")
-    else:
-        await _c.send("Role does not exist")
-
-
-@bot.command()
-async def remove(_c):
-    role = discord.utils.get(_c.guild.roles,name=magu_role)
-    if role:
-        await _c.author.remove_roles(role)
-        await _c.send(f"{_c.author.mention} has had {magu_role} role removed!")
-    else:
-        await _c.send("Role does not exist")
-
-    
-@bot.command()
-@commands.has_role(magu_role)
-async def munch(_c):
-    await _c.send("MMMM Munch Munch")
-
-@munch.error
-async def munch_error(_c,error):
-    await _c.send(f"{_c.author.mention},You aren't invited.")
+async def report_error( error):
+    info = await discord.Client.application_info(bot)
+    owner = info.owner
+    await owner.send(error)
+    print("sent")
 
 
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
