@@ -12,7 +12,7 @@ load_dotenv()
 
 token = os.getenv("DISCORD_TOKEN")
 
-G={"general":"general","targets":["eevortex"]}
+G={"general":"general","targets":[""]}
 
 handler = logging.FileHandler(filename="discord.log",encoding="utf-8",mode="w")
 intents = discord.Intents.default()
