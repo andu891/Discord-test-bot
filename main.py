@@ -12,7 +12,7 @@ load_dotenv()
 
 token = os.getenv("DISCORD_TOKEN")
 
-G={"general":"general","targets":[]}
+G={"general":"general","targets":["eevortex"]}
 
 handler = logging.FileHandler(filename="discord.log",encoding="utf-8",mode="w")
 intents = discord.Intents.default()
@@ -37,10 +37,20 @@ async def on_ready():
 
 @bot.event
 async def on_message(message): # 🗿
+    text = message.clean_content
+
     if message.author == bot.user:
         return
     if randint(1,100) == 1:
         await message.add_reaction("🗿")
+
+    if "andu" in text and "lühike" in text:
+        for reaction in ["👎","🫃","🐒"]:
+            await message.add_reaction(reaction)
+
+    if not message.guild and message.author  != G["owner"]:
+        print("sent")
+        await G["owner"].send(f"{message.author}: {text}")
     await bot.process_commands(message)
 
 @bot.event
@@ -107,7 +117,7 @@ async def resume(_c): # Resumes the song
 async def send(_c, *, msg):
     id = msg.split()[0]
     print(id, msg)
-    target =discord.Client.fetch_user(bot,int(id))
+    target = await discord.Client.fetch_user(bot,int(id))
     await _c.send(f"Sent message to {target.name}")
     await target.send(" ".join(msg.split()[1:]))
 
