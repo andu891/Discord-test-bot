@@ -5,14 +5,13 @@ from dotenv import load_dotenv
 import os
 from discord import EventStatus
 from random import randint
+import json
 
 
 
 load_dotenv()
 
 token = os.getenv("DISCORD_TOKEN")
-
-G={"general":"general","targets":[""]}
 
 handler = logging.FileHandler(filename="discord.log",encoding="utf-8",mode="w")
 intents = discord.Intents.default()
@@ -24,6 +23,19 @@ intents.guild_scheduled_events = True
 
 bot = commands.Bot(command_prefix="a!",intents=intents)
 
+def get_vars():
+    with open("vars.json", "r") as file:
+        data = json.load(file)
+        file.close
+    return data
+    
+def set_vars(new_data) -> None:
+    data = get_vars()
+    with open("vars.json","w") as file:
+        
+        json.dump(data|new_data,file)
+        file.close()
+
 
 
 
@@ -32,12 +44,13 @@ bot = commands.Bot(command_prefix="a!",intents=intents)
 async def on_ready():
     print(f"We are ready, {bot.user.name}")
     info = await discord.Client.application_info(bot)
-    G["owner"] = info.owner
+    set_vars({"owner_id":info.owner.id})
     
-
+    
 @bot.event
 async def on_message(message): # 🗿
     text = message.clean_content
+    owner = await get_owner()
 
     if message.author == bot.user:
         return
@@ -48,23 +61,22 @@ async def on_message(message): # 🗿
         for reaction in ["👎","🫃","🐒"]:
             await message.add_reaction(reaction)
 
-    if not message.guild and message.author  != G["owner"]:
+    if not message.guild and message.author  != owner:
+        
         print("sent")
-        await G["owner"].send(f"{message.author}: {text}")
+        await owner.send(f"{message.author}: {text}")
     await bot.process_commands(message)
 
 @bot.event
 async def on_voice_state_update(member,before,after): # microwave
-    targets = G["targets"]
+    targets = get_vars()["targets"]
     voice_client = member.guild.voice_client
     
-  
     if member.name  in targets and member != bot.user: # following and microwave function
-        
 
         if not voice_client:# if the bot isn't connected to a channel connect it
             print(f"Trying to join {member.name}")
-            voice_client = await after.channel.connect(timeout=30.0,reconnect=True,self_deaf=True,self_mute=False) 
+            voice_client = await after.channel.connect(timeout=30.0,reconnect=False,self_deaf=True,self_mute=False) 
         
         else:# updates the bots voice channel to the members
             await member.guild.change_voice_state(channel=after.channel,self_deaf=True,self_mute=False)# automatically leaves when channel is null
@@ -87,6 +99,22 @@ async def on_scheduled_event_update(before,after): # Features: Event start messa
 
     
         
+@bot.command()
+async def reset_vars(_c):
+    info = await discord.Client.application_info(bot)
+    owner_id = info.owner.id
+    set_vars({"targets":[],"owner":owner_id,"general":"general"})
+
+@bot.command()
+async def target(_c,*,msg):
+    old = get_vars()["targets"]
+    if old:
+        set_vars({"targets":old.append(msg)})
+    else:
+        set_vars({"targets":[msg]})
+
+    await _c.send(f"Added {msg} to targets")
+
 
 @bot.command()
 async def play(_c): # Plays the song
@@ -116,7 +144,6 @@ async def resume(_c): # Resumes the song
 @bot.command()
 async def send(_c, *, msg):
     id = msg.split()[0]
-    print(id, msg)
     target = await discord.Client.fetch_user(bot,int(id))
     await _c.send(f"Sent message to {target.name}")
     await target.send(" ".join(msg.split()[1:]))
@@ -126,8 +153,9 @@ async def send(_c, *, msg):
 
 @bot.command()
 async def report(_c,*,msg):
-    await _c.send(f"Sent report to the owner of this bot - {G['owner'].name}")
-    await G["owner"].send(f"{_c.author} sent message:\n {msg}")
+    owner = await get_owner()
+    await owner.send(msg)
+    
 
 @bot.command()
 async def join(_c): # Joins the authors vc
@@ -166,8 +194,14 @@ async def poll(_c,*,question):
 
 
 async def report_error( error):
-    await G["owner"].send(error)
-    print("sent")
+    owner = await get_owner()
+    await owner.send(error)
+
+    
+async def get_owner():
+    id = get_vars()["owner_id"]
+    return await discord.Client.fetch_user(bot,id)
+
 
 
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
