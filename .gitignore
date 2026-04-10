@@ -1,3 +1,4 @@
 .env
 discord.log
 sound/songs/
+__pycache__
