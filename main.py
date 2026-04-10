@@ -71,6 +71,9 @@ async def on_message(message): # 🗿
 async def on_voice_state_update(member,before,after): # microwave
     target = get_vars()["target"]
     voice_client = member.guild.voice_client
+
+    #if len(voice_client.channel.members) == 1: ## maybe add this maybe not
+    #    await voice_client.disconnect()
     
     if member.name  == target and member != bot.user: # following and microwave function
 
@@ -120,12 +123,20 @@ async def play(_c,*,msg): # Plays the song
         return
     
     if id not in os.listdir("./sound/songs"): # download if songs not in storage
+        await _c.send("Downloading...")
         download_audio(msg)
     
     path = f"sound/songs/{id}/" + os.listdir(f"./sound/songs/{id}")[0] # the path of the song file a
     audio = discord.FFmpegPCMAudio(source=path,executable="sound/ffmpeg/bin/ffmpeg.exe",pipe=False)
     _c.guild.voice_client.play(audio,signal_type="music") # play it
     await _c.send(f"Playing song ")
+
+@bot.command()
+async def songs(_c):
+    out = ""
+    for folder in os.listdir("./sound/songs"):
+        out += os.listdir(f"./sound/songs/{folder}")[0][0:-3] + "\n"
+    await _c.reply(out)
     
 @play.error
 async def play_error(_c,error):
