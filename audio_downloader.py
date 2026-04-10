@@ -7,6 +7,7 @@ def download_audio(url):
     print(id)
 
     yl_opts= {
+        "format":"m4a/bestaudio/best",
         "paths":{"home":f"./sound/songs/{id}"}, # folder where the file will be downloaded to 
         "postprocessors":[{ # audio processor (FFmpeg) 
             "key":"FFmpegExtractAudio",

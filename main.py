@@ -116,9 +116,12 @@ async def target(_c,*,msg):# sets the target for microwave
 
 @bot.command()
 async def play(_c,*,msg): # Plays the song
+    voice_client = _c.guild.voice_client
     id = msg[-11:] # get the id from the link
+    if not voice_client:
+        voice_client = await _c.author.voice.channel.connect(timeout=30.0,reconnect=False,self_deaf=True,self_mute=False)
 
-    if _c.guild.voice_client.is_playing(): # if already playing dont play
+    if voice_client.is_playing(): # if already playing dont play
         await _c.send("Failed: Already playing a song!")
         return
     
@@ -135,7 +138,7 @@ async def play(_c,*,msg): # Plays the song
 async def songs(_c):
     out = ""
     for folder in os.listdir("./sound/songs"):
-        out += os.listdir(f"./sound/songs/{folder}")[0][0:-3] + "\n"
+        out += os.listdir(f"./sound/songs/{folder}")[0][0:-4] + "\n"
     await _c.reply(out)
     
 @play.error
