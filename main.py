@@ -1,12 +1,12 @@
-import discord
 from discord.ext import commands
-import logging
 from dotenv import load_dotenv
-import os
 from discord import EventStatus
 from random import randint
 import json
-
+import os
+import logging
+import discord
+from audio_downloader import download_audio
 
 
 load_dotenv()
@@ -69,10 +69,10 @@ async def on_message(message): # 🗿
 
 @bot.event
 async def on_voice_state_update(member,before,after): # microwave
-    targets = get_vars()["targets"]
+    target = get_vars()["target"]
     voice_client = member.guild.voice_client
     
-    if member.name  in targets and member != bot.user: # following and microwave function
+    if member.name  == target and member != bot.user: # following and microwave function
 
         if not voice_client:# if the bot isn't connected to a channel connect it
             print(f"Trying to join {member.name}")
@@ -84,7 +84,7 @@ async def on_voice_state_update(member,before,after): # microwave
         
 
         if not voice_client.is_playing():# if the audio isn't playing play it 
-            audio = discord.FFmpegPCMAudio(source="sound/microwave.mp3",executable='sound/ffmpeg/bin/ffmpeg.exe',pipe=False)
+            audio = discord.FFmpegPCMAudio(source="sound/songs/microwave.mp3",executable='sound/ffmpeg/bin/ffmpeg.exe',pipe=False)
             voice_client.play(audio,signal_type="music")
     
 @bot.event
@@ -92,35 +92,39 @@ async def on_scheduled_event_update(before,after): # Features: Event start messa
     print(after.status)
     print(before.status)
     if not before.status == EventStatus.active and after.status == EventStatus.active: # when the event has just started find general and send the message
-        general_channel_name = G["general"]
+        general_channel_name = get_vars()["general"]
         general_channel = list(filter(lambda channel: channel.name == general_channel_name,after.guild.channels))[0]
         print("started")
         await general_channel.send(f"{after.guild.default_role} {after.name} on alustanud!!!")
 
-    
-        
+
 @bot.command()
-async def reset_vars(_c):
+async def reset_vars(_c): # resets JSON file to default
     info = await discord.Client.application_info(bot)
     owner_id = info.owner.id
     set_vars({"targets":[],"owner":owner_id,"general":"general"})
 
-@bot.command()
-async def target(_c,*,msg):
-    old = get_vars()["targets"]
-    if old:
-        set_vars({"targets":old.append(msg)})
-    else:
-        set_vars({"targets":[msg]})
+@bot.command() 
+async def target(_c,*,msg):# sets the target for microwave
 
+    set_vars({"target":msg})
     await _c.send(f"Added {msg} to targets")
 
 
 @bot.command()
-async def play(_c): # Plays the song
-    #TODO: Make this actually use youtube links
-    audio = discord.FFmpegPCMAudio(source="sound/song.mp3",executable="sound/ffmpeg/bin/ffmpeg.exe",pipe=False)
-    _c.guild.voice_client.play(audio,signal_type="music")
+async def play(_c,*,msg): # Plays the song
+    id = msg[-11:] # get the id from the link
+
+    if _c.guild.voice_client.is_playing(): # if already playing dont play
+        await _c.send("Failed: Already playing a song!")
+        return
+    
+    if id not in os.listdir("./sound/songs"): # download if songs not in storage
+        download_audio(msg)
+    
+    path = f"sound/songs/{id}/" + os.listdir(f"./sound/songs/{id}")[0] # the path of the song file a
+    audio = discord.FFmpegPCMAudio(source=path,executable="sound/ffmpeg/bin/ffmpeg.exe",pipe=False)
+    _c.guild.voice_client.play(audio,signal_type="music") # play it
     await _c.send(f"Playing song ")
     
 @play.error
