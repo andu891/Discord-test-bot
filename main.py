@@ -7,6 +7,7 @@ import os
 import logging
 import discord
 from audio_downloader import download_audio
+from time import sleep
 
 
 load_dotenv()
@@ -115,24 +116,56 @@ async def target(_c,*,msg):# sets the target for microwave
 
 
 @bot.command()
-async def play(_c,*,msg): # Plays the song
+async def play(_c,*,msg): # Plays a song from youtube URL
+
+    def play_next():
+        queue = get_vars()["queue"]
+        print(queue)
+        if queue and len(queue) > 0:
+
+            path = f"sound/songs/{queue[0]}/" + os.listdir(f"./sound/songs/{queue[0]}")[0] # the path of the song file
+            audio = discord.FFmpegPCMAudio(source=path,executable="sound/ffmpeg/bin/ffmpeg.exe",pipe=False) #audio source
+
+
+            queue.pop(0) # remove the song thats gonna play from queue
+            set_vars({"queue":queue})
+
+
+            voice_client.play(audio,signal_type="music",after=lambda x : play_next()) # play it
+        
+        else: return
+        
+
+
+
+
     voice_client = _c.guild.voice_client
     id = msg[-11:] # get the id from the link
-    if not voice_client:
+    if not voice_client:# if bots not in a channel connect
         voice_client = await _c.author.voice.channel.connect(timeout=30.0,reconnect=False,self_deaf=True,self_mute=False)
-
-    if voice_client.is_playing(): # if already playing dont play
-        await _c.send("Failed: Already playing a song!")
-        return
     
     if id not in os.listdir("./sound/songs"): # download if songs not in storage
         await _c.send("Downloading...")
         download_audio(msg)
+    ## add to queue
+    old = get_vars()["queue"]
+    if old:
+        old.append(id)
+        set_vars({"queue":old})
+    else:
+        set_vars({"queue":[id]})
+
+    if not voice_client.is_playing():
+        play_next()
+        await _c.send(f"Playing song")
+        return
     
-    path = f"sound/songs/{id}/" + os.listdir(f"./sound/songs/{id}")[0] # the path of the song file a
-    audio = discord.FFmpegPCMAudio(source=path,executable="sound/ffmpeg/bin/ffmpeg.exe",pipe=False)
-    _c.guild.voice_client.play(audio,signal_type="music") # play it
-    await _c.send(f"Playing song ")
+    await _c.send(f"Added to queue")
+    
+        
+    
+
+      
 
 @bot.command()
 async def songs(_c):
@@ -141,14 +174,30 @@ async def songs(_c):
         out += os.listdir(f"./sound/songs/{folder}")[0][0:-4] + "\n"
     await _c.reply(out)
     
+
+@bot.command()
+async def queue(_c):
+    out = ""
+    songs = get_vars()["queue"]
+    i=1
+    for song in songs:
+        out +=  f"\n {i}  {os.listdir(f'./sound/songs/{song}')[0][0:-4]}"
+        i += 1
+
+    await _c.send("Current queue:" + out)
+
 @play.error
 async def play_error(_c,error):
     await report_error(error)
 
 @bot.command()
 async def stop(_c): # Stops the song
+    set_vars({"loop":False,"queue":[]})
     _c.guild.voice_client.stop()
 
+@bot.command()
+async def skip(_c):
+    _c.guild.voice_client.stop()
 
 @bot.command()
 async def pause(_c): # Pauses the song
