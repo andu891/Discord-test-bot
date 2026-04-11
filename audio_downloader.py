@@ -20,7 +20,3 @@ def download_audio(url):
 
     with YoutubeDL(yl_opts) as ydl: # download from the link
         ydl.download(url)
-
-
- #test 
-#download_audio("https://www.youtube.com/watch?v=F95zfKBSyng")
