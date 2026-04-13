@@ -120,15 +120,17 @@ async def play(_c,*,msg): # Plays a song from youtube URL
 
     def play_next():
         queue = get_vars()["queue"]
-        print(queue)
         if queue and len(queue) > 0:
+            if get_vars()["loop"]:
+                current_song = queue[0]
+            else:    
+                current_song = queue.pop(0) # gets the song id that needs to be played 
 
-            path = f"sound/songs/{queue[0]}/" + os.listdir(f"./sound/songs/{queue[0]}")[0] # the path of the song file
+            path = f"sound/songs/{current_song}/" + os.listdir(f"./sound/songs/{current_song}")[0] # the path of the song file
             audio = discord.FFmpegPCMAudio(source=path,executable="sound/ffmpeg/bin/ffmpeg.exe",pipe=False) #audio source
 
 
-            queue.pop(0) # remove the song thats gonna play from queue
-            set_vars({"queue":queue})
+            set_vars({"queue":queue,"current_song":current_song})
 
 
             voice_client.play(audio,signal_type="music",after=lambda x : play_next()) # play it
@@ -163,7 +165,16 @@ async def play(_c,*,msg): # Plays a song from youtube URL
     await _c.send(f"Added to queue")
     
         
+
+@bot.command()
+async def loop(_c):
     
+    if get_vars()["loop"]:
+        set_vars({"loop":False})
+        await _c.send("Not looping!")
+    else:
+        set_vars({"loop":True})
+        await _c.send("Looping!")
 
       
 
