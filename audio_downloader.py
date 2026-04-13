@@ -14,7 +14,7 @@ def download_audio(url):
             "preferredcodec":"m4a"
         }],
         "ffmpeg_location":"./sound/ffmpeg/bin", # audio processor location
-        "windownsfilenames":True,
+        "windowsfilenames":True,
         #"logger": logging.getLogger()
     }
 
