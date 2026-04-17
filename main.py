@@ -118,20 +118,22 @@ async def play(_c,*,msg): # Plays a song from youtube URL
 
     def play_next(): # function that plays after
         queue = get_vars()["queue"]
-        if queue and len(queue) > 0:  
-            current_song = queue.pop(0) # Id of the current song 
-            if get_vars()["loop"]:
-                queue.append(current_song)
-            path = f"sound/songs/{current_song}/" + os.listdir(f"./sound/songs/{current_song}")[0] # the path of the song file
-            audio = discord.FFmpegPCMAudio(source=path,executable="sound/ffmpeg/bin/ffmpeg.exe",pipe=False) #audio source
-
-
-            set_vars({"queue":queue,"current_song":current_song}) # update the queue and current song 
-
-
-            voice_client.play(audio,signal_type="music",after=lambda x : play_next()) # play it
+        if not queue or len(queue) == 0: # if the queue is empty do nothing 
+            return  
         
-        else: return
+        if get_vars()["loop"]:
+            queue.append(get_vars()["current_song"]) # append the song that just played 
+
+        current_song = queue.pop(0) # Id of the current song 
+        
+        path = f"sound/songs/{current_song}/" + os.listdir(f"./sound/songs/{current_song}")[0] # the path of the song file
+        audio = discord.FFmpegPCMAudio(source=path,executable="sound/ffmpeg/bin/ffmpeg.exe",pipe=False) #audio source
+
+
+        set_vars({"queue":queue,"current_song":current_song}) # update the queue and current song 
+
+
+        voice_client.play(audio,signal_type="music",after=lambda x : play_next()) # play it
         
 
 
@@ -204,12 +206,13 @@ async def coinflip(_c):
         
 @bot.command()
 async def queue(_c):
-    out = f"Currently Playing: {get_vars()["current_song"]}"
+    current_song = os.listdir(f"sound/songs/{get_vars()["current_song"]}")[0][0:-4]
+    out = f"Current Queue:\n1. {current_song}" #TODO: make this actually find the name of the song
     songs = get_vars()["queue"]
-    i=1
+    i=2
 
     for song in songs:
-        out +=  f"\n {i}  {os.listdir(f'./sound/songs/{song}')[0][0:-4]}"
+        out +=  f"\n {i}.  {os.listdir(f'./sound/songs/{song}')[0][0:-4]}"
         i += 1
 
     await _c.send(out)
