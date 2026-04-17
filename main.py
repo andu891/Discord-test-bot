@@ -7,8 +7,6 @@ import os
 import logging
 import discord
 from audio_downloader import download_audio
-from time import sleep
-
 
 load_dotenv()
 
@@ -45,7 +43,7 @@ def set_vars(new_data) -> None:
 async def on_ready():
     print(f"We are ready, {bot.user.name}")
     info = await discord.Client.application_info(bot)
-    set_vars({"owner_id":info.owner.id})
+    set_vars({"owner_id":info.owner.id,"loop":False,"queue":[]})
     
     
 @bot.event
@@ -118,19 +116,17 @@ async def target(_c,*,msg):# sets the target for microwave
 @bot.command()
 async def play(_c,*,msg): # Plays a song from youtube URL
 
-    def play_next():
+    def play_next(): # function that plays after
         queue = get_vars()["queue"]
-        if queue and len(queue) > 0:
+        if queue and len(queue) > 0:  
+            current_song = queue.pop(0) # Id of the current song 
             if get_vars()["loop"]:
-                current_song = queue[0]
-            else:    
-                current_song = queue.pop(0) # gets the song id that needs to be played 
-
+                queue.append(current_song)
             path = f"sound/songs/{current_song}/" + os.listdir(f"./sound/songs/{current_song}")[0] # the path of the song file
             audio = discord.FFmpegPCMAudio(source=path,executable="sound/ffmpeg/bin/ffmpeg.exe",pipe=False) #audio source
 
 
-            set_vars({"queue":queue,"current_song":current_song})
+            set_vars({"queue":queue,"current_song":current_song}) # update the queue and current song 
 
 
             voice_client.play(audio,signal_type="music",after=lambda x : play_next()) # play it
@@ -141,20 +137,23 @@ async def play(_c,*,msg): # Plays a song from youtube URL
 
 
 
-    voice_client = _c.guild.voice_client
+    voice_client = _c.guild.voice_client # the voice client of the bot
     id = msg[-11:] # get the id from the link
     if not voice_client:# if bots not in a channel connect
         voice_client = await _c.author.voice.channel.connect(timeout=30.0,reconnect=False,self_deaf=True,self_mute=False)
     
-    if id not in os.listdir("./sound/songs"): # download if songs not in storage
+    if id not in os.listdir("./sound/songs"): # download if song id isn't in storage
         await _c.send("Downloading...")
         download_audio(msg)
+
+
+
     ## add to queue
     old = get_vars()["queue"]
-    if old:
+    if old: # if the queue existed before just append the new song to it
         old.append(id)
         set_vars({"queue":old})
-    else:
+    else: # else set the queue to the id
         set_vars({"queue":[id]})
 
     if not voice_client.is_playing():
@@ -169,12 +168,20 @@ async def play(_c,*,msg): # Plays a song from youtube URL
 @bot.command()
 async def loop(_c):
     
+
+    if not _c.guild.voice_client or not _c.guild.voice_client.is_playing():
+        await _c.send("Im not playing a song!")
+        return
+
+
     if get_vars()["loop"]:
         set_vars({"loop":False})
         await _c.send("Not looping!")
+
+
     else:
         set_vars({"loop":True})
-        await _c.send("Looping!")
+        await _c.send("Now Looping!")
 
       
 
@@ -186,16 +193,26 @@ async def songs(_c):
     await _c.reply(out)
     
 
+
+@bot.command()
+async def coinflip(_c):
+    if randint(0,1) == 1:
+        await _c.send("Heads")
+    else:
+        await _c.send("Tails")
+
+        
 @bot.command()
 async def queue(_c):
-    out = ""
+    out = f"Currently Playing: {get_vars()["current_song"]}"
     songs = get_vars()["queue"]
     i=1
+
     for song in songs:
         out +=  f"\n {i}  {os.listdir(f'./sound/songs/{song}')[0][0:-4]}"
         i += 1
 
-    await _c.send("Current queue:" + out)
+    await _c.send(out)
 
 @play.error
 async def play_error(_c,error):
