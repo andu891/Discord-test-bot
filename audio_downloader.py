@@ -15,7 +15,6 @@ def download_audio(url):
         }],
         "ffmpeg_location":"./sound/ffmpeg/bin", # audio processor location
         "windowsfilenames":True,
-        #"logger": logging.getLogger()
     }
 
     with YoutubeDL(yl_opts) as ydl: # download from the link
