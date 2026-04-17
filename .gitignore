@@ -1,5 +1,4 @@
-discord.log
 sound/songs/*
 __pycache__
 .env
-*.log
+discord.log
