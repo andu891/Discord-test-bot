@@ -118,11 +118,14 @@ async def play(_c,*,msg): # Plays a song from youtube URL
 
     def play_next(): # function that plays after
         queue = get_vars()["queue"]
-        if not queue or len(queue) == 0: # if the queue is empty do nothing 
-            return  
         
         if get_vars()["loop"]:
-            queue.append(get_vars()["current_song"]) # append the song that just played 
+            print(get_vars()["current_song"])
+            queue.append(get_vars()["current_song"]) # append the song that just played
+
+        if not queue or len(queue) == 0: # if the queue is empty do nothing 
+            return  
+            
 
         current_song = queue.pop(0) # Id of the current song 
         
@@ -133,7 +136,8 @@ async def play(_c,*,msg): # Plays a song from youtube URL
         set_vars({"queue":queue,"current_song":current_song}) # update the queue and current song 
 
 
-        voice_client.play(audio,signal_type="music",after=lambda x : play_next()) # play it
+        voice_client.play(audio,signal_type="music",after= lambda x : play_next()) # play it
+        
         
 
 
@@ -151,16 +155,12 @@ async def play(_c,*,msg): # Plays a song from youtube URL
 
 
     ## add to queue
-    old = get_vars()["queue"]
-    if old: # if the queue existed before just append the new song to it
-        old.append(id)
-        set_vars({"queue":old})
-    else: # else set the queue to the id
-        set_vars({"queue":[id]})
+    queue = get_vars()["queue"]
+    queue.append(id)
+    set_vars({"queue":queue})
 
     if not voice_client.is_playing():
-        play_next()
-        await _c.send(f"Playing song")
+        await play_next()
         return
     
     await _c.send(f"Added to queue")
