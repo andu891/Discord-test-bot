@@ -160,7 +160,7 @@ async def play(_c,*,msg): # Plays a song from youtube URL
     set_vars({"queue":queue})
 
     if not voice_client.is_playing():
-        await play_next()
+        play_next()
         return
     
     await _c.send(f"Added to queue")
