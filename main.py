@@ -115,7 +115,6 @@ async def target(_c,*,msg):# sets the target for microwave
 
 @bot.command()
 async def play(_c,*,msg): # Plays a song from youtube URL
-
     def play_next(): # function that plays after
         queue = get_vars()["queue"]
         
@@ -135,7 +134,7 @@ async def play(_c,*,msg): # Plays a song from youtube URL
 
         set_vars({"queue":queue,"current_song":current_song}) # update the queue and current song 
 
-
+        
         voice_client.play(audio,signal_type="music",after= lambda x : play_next()) # play it
         
         
@@ -282,14 +281,12 @@ async def reply(_c): # replies author
     await _c.reply("Replied!")
 
 
-
 @bot.command() # creates a poll with reactions
 async def poll(_c,*,question):
     embed = discord.Embed(title="New Poll",description=question)
     poll_message= await _c.send(embed=embed)
     await poll_message.add_reaction("👍")
     await poll_message.add_reaction("👎")
-
 
 async def report_error( error):
     owner = await get_owner()
