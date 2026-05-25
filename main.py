@@ -136,16 +136,23 @@ async def play(_c,*,msg): # Plays a song from youtube URL
 
         
         voice_client.play(audio,signal_type="music",after= lambda x : play_next()) # play it
-        
-        
+    ###############
+    
+    ###############
 
 
-
+    
 
     voice_client = _c.guild.voice_client # the voice client of the bot
+
+    
+
     id = msg[-11:] # get the id from the link
     if not voice_client:# if bots not in a channel connect
         voice_client = await _c.author.voice.channel.connect(timeout=30.0,reconnect=False,self_deaf=True,self_mute=False)
+
+    if voice_client.is_paused():
+        resume(_c)
     
     if id not in os.listdir("./sound/songs"): # download if song id isn't in storage
         await _c.send("Downloading...")
@@ -163,7 +170,15 @@ async def play(_c,*,msg): # Plays a song from youtube URL
         return
     
     await _c.send(f"Added to queue")
-    
+
+
+@play.error
+async def play_error(_c,error):
+    voice_client = _c.guild.voice_client
+    if voice_client and voice_client.is_paused():
+        await resume(_c)
+        return
+    await report_error(error)
         
 
 @bot.command()
@@ -216,9 +231,7 @@ async def queue(_c):
 
     await _c.send(out)
 
-@play.error
-async def play_error(_c,error):
-    await report_error(error)
+
 
 @bot.command()
 async def stop(_c): # Stops the song
