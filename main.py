@@ -134,7 +134,7 @@ class music_player(commands.Cog):
 
         if bot.voice_clients:
             self.voice_client = bot.voice_clients[0]
-        if self.voice_client and  not self.voice_client.is_playing():
+        if not bot.voice_clients or not self.voice_client.is_playing():
             await bot.change_presence()
         
         if self.voice_client and not self.voice_client.is_playing() and not self.voice_client.is_paused() and self.playing and self.queue:
