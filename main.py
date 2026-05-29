@@ -2,11 +2,13 @@ from discord.ext import commands
 from dotenv import load_dotenv
 from discord import EventStatus
 from random import randint
+from audio_downloader import download_audio
+from discord.ext import tasks, commands
 import json
 import os
 import logging
 import discord
-from audio_downloader import download_audio
+
 
 load_dotenv()
 
@@ -22,7 +24,9 @@ intents.guild_scheduled_events = True
 
 bot = commands.Bot(command_prefix="a!",intents=intents)
 
-def get_vars():
+
+### helpers
+def get_vars() -> dict:
     with open("vars.json", "r") as file:
         data = json.load(file)
         file.close
@@ -36,14 +40,27 @@ def set_vars(new_data) -> None:
         file.close()
 
 
+async def report_error( error):
+    owner = await get_owner()
+    await owner.send(error)
+
+    
+async def get_owner() -> discord.user:
+    id = get_vars()["owner_id"]
+    return await discord.Client.fetch_user(bot,id)
 
 
 
+
+### Events 
 @bot.event
 async def on_ready():
     print(f"We are ready, {bot.user.name}")
     info = await discord.Client.application_info(bot)
-    set_vars({"owner_id":info.owner.id,"loop":False,"queue":[]})
+    set_vars({"owner_id":info.owner.id,"loop":False})
+    global music
+    music = music_player()
+    
     
     
 @bot.event
@@ -82,12 +99,6 @@ async def on_voice_state_update(member,before,after): # microwave
         
         else:# updates the bots voice channel to the members
             await member.guild.change_voice_state(channel=after.channel,self_deaf=True,self_mute=False)# automatically leaves when channel is null
-
-        
-
-        if not voice_client.is_playing():# if the audio isn't playing play it 
-            audio = discord.FFmpegPCMAudio(source="sound/songs/microwave.mp3",executable='sound/ffmpeg/bin/ffmpeg.exe',pipe=False)
-            voice_client.play(audio,signal_type="music")
     
 @bot.event
 async def on_scheduled_event_update(before,after): # Features: Event start message 
@@ -99,7 +110,55 @@ async def on_scheduled_event_update(before,after): # Features: Event start messa
         print("started")
         await general_channel.send(f"{after.guild.default_role} {after.name} on alustanud!!!")
 
+##### Cogs
 
+class music_player(commands.Cog):
+    def __init__(self):
+        self.queue: list = []
+        self.loop: bool = False
+        self.playing: bool = False
+        self.voice_client: discord.VoiceClient = None
+        self.current_song: str = ""
+        self.player.start()
+    
+    def cog_unload(self):
+        self.player.cancel()
+
+
+
+    @tasks.loop(seconds=1.0)
+    async def player(self):
+        def after(id):
+            if self.loop:
+                self.queue.append(id)
+
+        if bot.voice_clients:
+            self.voice_client = bot.voice_clients[0]
+        if self.voice_client and  not self.voice_client.is_playing():
+            await bot.change_presence()
+        
+        if self.voice_client and not self.voice_client.is_playing() and not self.voice_client.is_paused() and self.playing and self.queue:
+            self.current_song = self.queue.pop()
+            path = f"sound/songs/{self.current_song}/" + os.listdir(f"./sound/songs/{self.current_song}")[0] # the path of the song file
+            
+            
+            ##play song
+            audio = discord.FFmpegPCMAudio(source=path, executable="sound/ffmpeg/bin/ffmpeg.exe")
+            self.voice_client.play(audio,signal_type="music", after=lambda x: after(self.current_song))
+
+            ##Change presence
+            activity = discord.Activity(type=discord.ActivityType.listening, name=f"Playing {os.listdir(f'./sound/songs/{self.current_song}')[0][:-18]} in {self.voice_client.guild}")
+            await bot.change_presence(activity=activity)
+
+
+    #@player.before_loop
+    #async def before_player(self):
+    #    await bot.wait_until_ready()
+        
+        
+
+
+###### Commands
 @bot.command()
 async def reset_vars(_c): # resets JSON file to default
     info = await discord.Client.application_info(bot)
@@ -115,89 +174,46 @@ async def target(_c,*,msg):# sets the target for microwave
 
 @bot.command()
 async def play(_c,*,msg): # Plays a song from youtube URL
-    def play_next(): # function that plays after
-        queue = get_vars()["queue"]
-        
-        if get_vars()["loop"]:
-            print(get_vars()["current_song"])
-            queue.append(get_vars()["current_song"]) # append the song that just played
-
-        if not queue or len(queue) == 0: # if the queue is empty do nothing 
-            return  
-            
-
-        current_song = queue.pop(0) # Id of the current song 
-        
-        path = f"sound/songs/{current_song}/" + os.listdir(f"./sound/songs/{current_song}")[0] # the path of the song file
-        audio = discord.FFmpegPCMAudio(source=path,executable="sound/ffmpeg/bin/ffmpeg.exe",pipe=False) #audio source
-
-
-        set_vars({"queue":queue,"current_song":current_song}) # update the queue and current song 
-
-        
-        voice_client.play(audio,signal_type="music",after= lambda x : play_next()) # play it
-    ###############
-    
-    ###############
-
-
-    
-
     voice_client = _c.guild.voice_client # the voice client of the bot
 
     
-
+    
     id = msg[-11:] # get the id from the link
+     # add id to the queue
+    
     if not voice_client:# if bots not in a channel connect
         voice_client = await _c.author.voice.channel.connect(timeout=30.0,reconnect=False,self_deaf=True,self_mute=False)
 
-    if voice_client.is_paused():
-        resume(_c)
     
     if id not in os.listdir("./sound/songs"): # download if song id isn't in storage
         await _c.send("Downloading...")
         download_audio(msg)
 
-
-
-    ## add to queue
-    queue = get_vars()["queue"]
-    queue.append(id)
-    set_vars({"queue":queue})
-
-    if not voice_client.is_playing():
-        play_next()
-        return
+    music.playing = True
+    music.queue.append(id)
     
     await _c.send(f"Added to queue")
 
 
 @play.error
 async def play_error(_c,error):
-    voice_client = _c.guild.voice_client
-    if voice_client and voice_client.is_paused():
-        await resume(_c)
-        return
     await report_error(error)
         
 
 @bot.command()
-async def loop(_c):
+async def loop(_c): #TODO: integrate this
     
 
     if not _c.guild.voice_client or not _c.guild.voice_client.is_playing():
         await _c.send("Im not playing a song!")
         return
 
-
-    if get_vars()["loop"]:
-        set_vars({"loop":False})
-        await _c.send("Not looping!")
-
+    music.loop = not music.loop
+    if music.loop:
+        await _c.send("Now Looping!")
 
     else:
-        set_vars({"loop":True})
-        await _c.send("Now Looping!")
+        await _c.send("Stopped Looping!")
 
       
 
@@ -220,9 +236,8 @@ async def coinflip(_c):
         
 @bot.command()
 async def queue(_c):
-    current_song = os.listdir(f"sound/songs/{get_vars()["current_song"]}")[0][0:-4]
-    out = f"Current Queue:\n1. {current_song}" #TODO: make this actually find the name of the song
-    songs = get_vars()["queue"]
+    out = f"Current Queue: {os.listdir(f'./sound/songs/{music.current_song}')[0][0:-4]} " #TODO: make this actually find the name of the song
+    songs = music.queue
     i=2
 
     for song in songs:
@@ -235,7 +250,8 @@ async def queue(_c):
 
 @bot.command()
 async def stop(_c): # Stops the song
-    set_vars({"loop":False,"queue":[]})
+    music.playing = False
+    music.queue = []
     _c.guild.voice_client.stop()
 
 @bot.command()
@@ -301,14 +317,7 @@ async def poll(_c,*,question):
     await poll_message.add_reaction("👍")
     await poll_message.add_reaction("👎")
 
-async def report_error( error):
-    owner = await get_owner()
-    await owner.send(error)
 
-    
-async def get_owner():
-    id = get_vars()["owner_id"]
-    return await discord.Client.fetch_user(bot,id)
 
 
 
