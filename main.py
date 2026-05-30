@@ -137,8 +137,8 @@ class music_player(commands.Cog):
         if not bot.voice_clients or not self.voice_client.is_playing():
             await bot.change_presence()
         
-        if self.voice_client and not self.voice_client.is_playing() and not self.voice_client.is_paused() and self.playing and self.queue:
-            self.current_song = self.queue.pop()
+        if self.voice_client and not self.voice_client.is_playing() and not self.voice_client.is_paused() and self.playing and self.queue: # if not playing song and theres a queue play!
+            self.current_song = self.queue.pop(0)
             path = f"sound/songs/{self.current_song}/" + os.listdir(f"./sound/songs/{self.current_song}")[0] # the path of the song file
             
             
@@ -151,9 +151,9 @@ class music_player(commands.Cog):
             await bot.change_presence(activity=activity)
 
 
-    #@player.before_loop
-    #async def before_player(self):
-    #    await bot.wait_until_ready()
+    @player.before_loop
+    async def before_player(self):
+        await bot.wait_until_ready()
         
         
 
@@ -236,7 +236,7 @@ async def coinflip(_c):
         
 @bot.command()
 async def queue(_c):
-    out = f"Current Queue: {os.listdir(f'./sound/songs/{music.current_song}')[0][0:-4]} " #TODO: make this actually find the name of the song
+    out = f"Current Queue:\n {os.listdir(f'./sound/songs/{music.current_song}')[0][0:-4]} " #TODO: make this actually find the name of the song
     songs = music.queue
     i=2
 
