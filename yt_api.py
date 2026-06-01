@@ -13,7 +13,8 @@ def search(name:str) -> str:
         "q":name + "song",
         "max_results":1,
         "type":"video",
-        "key":key
+        "key":key,
+        "videoDuration":"medium"
     }
 
     response = requests.get(url=link,params=params)
