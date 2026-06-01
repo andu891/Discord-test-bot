@@ -4,10 +4,13 @@ from discord import EventStatus
 from random import randint
 from audio_downloader import download_audio
 from discord.ext import tasks, commands
+from yt_api import search
 import json
 import os
 import logging
 import discord
+
+
 
 
 load_dotenv()
@@ -175,11 +178,12 @@ async def target(_c,*,msg):# sets the target for microwave
 @bot.command()
 async def play(_c,*,msg): # Plays a song from youtube URL
     voice_client = _c.guild.voice_client # the voice client of the bot
+    
+    id = msg[-11:]
 
+    if len(msg) != 11 and not "https" in msg:
+        id = search(msg) # get the id from the link
     
-    
-    id = msg[-11:] # get the id from the link
-     # add id to the queue
     
     if not voice_client:# if bots not in a channel connect
         voice_client = await _c.author.voice.channel.connect(timeout=30.0,reconnect=False,self_deaf=True,self_mute=False)
@@ -187,7 +191,7 @@ async def play(_c,*,msg): # Plays a song from youtube URL
     
     if id not in os.listdir("./sound/songs"): # download if song id isn't in storage
         await _c.send("Downloading...")
-        download_audio(msg)
+        download_audio(id)
 
     music.playing = True
     music.queue.append(id)
@@ -236,12 +240,12 @@ async def coinflip(_c):
         
 @bot.command()
 async def queue(_c):
-    out = f"Current Queue:\n {os.listdir(f'./sound/songs/{music.current_song}')[0][0:-4]} " #TODO: make this actually find the name of the song
+    out = f"1. {os.listdir(f'./sound/songs/{music.current_song}')[0][0:-4]}\n "
     songs = music.queue
     i=2
 
     for song in songs:
-        out +=  f"\n {i}.  {os.listdir(f'./sound/songs/{song}')[0][0:-4]}"
+        out +=  f"{i}.  {os.listdir(f'./sound/songs/{song}')[0][0:-4]}\n"
         i += 1
 
     await _c.send(out)
