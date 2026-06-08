@@ -10,7 +10,7 @@ def search(name:str) -> str:
 
     params = {
         "part":"snippet",
-        "q":name + "song",
+        "q":name + " song",
         "max_results":1,
         "type":"video",
         "key":key,
