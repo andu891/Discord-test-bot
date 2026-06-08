@@ -19,7 +19,11 @@ def search(name:str) -> str:
 
     response = requests.get(url=link,params=params)
     print(response.status_code)
+    print(response.reason)
+    
     response.raise_for_status()
     data = response.json()
+    if len(data["items"]) == 0:
+        return None
     id= data["items"][0]["id"]["videoId"]
     return id

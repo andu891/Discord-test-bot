@@ -12,7 +12,6 @@ import discord
 
 
 
-
 load_dotenv()
 
 token = os.getenv("DISCORD_TOKEN")
@@ -82,26 +81,9 @@ async def on_message(message): # 🗿
 
     if not message.guild and message.author  != owner:
         
-        print("sent")
         await owner.send(f"{message.author}: {text}")
     await bot.process_commands(message)
 
-@bot.event
-async def on_voice_state_update(member,before,after): # microwave
-    target = get_vars()["target"]
-    voice_client = member.guild.voice_client
-
-    #if len(voice_client.channel.members) == 1: ## maybe add this maybe not
-    #    await voice_client.disconnect()
-    
-    if member.name  == target and member != bot.user: # following and microwave function
-
-        if not voice_client:# if the bot isn't connected to a channel connect it
-            print(f"Trying to join {member.name}")
-            voice_client = await after.channel.connect(timeout=30.0,reconnect=False,self_deaf=True,self_mute=False) 
-        
-        else:# updates the bots voice channel to the members
-            await member.guild.change_voice_state(channel=after.channel,self_deaf=True,self_mute=False)# automatically leaves when channel is null
     
 @bot.event
 async def on_scheduled_event_update(before,after): # Features: Event start message 
@@ -182,7 +164,10 @@ async def play(_c,*,msg): # Plays a song from youtube URL
     id = msg[-11:]
 
     if "https" not in msg:
-        id = search(msg) # get the id from the link
+        id = search(msg) # get the id from the name
+        if id == None:
+            await _c.send("Error: Song not found")
+            return
     
     
     if not voice_client:# if bots not in a channel connect
@@ -277,8 +262,6 @@ async def send(_c, *, msg):
     target = await discord.Client.fetch_user(bot,int(id))
     await _c.send(f"Sent message to {target.name}")
     await target.send(" ".join(msg.split()[1:]))
-
-
 
 
 @bot.command()
