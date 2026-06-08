@@ -181,7 +181,7 @@ async def play(_c,*,msg): # Plays a song from youtube URL
     
     id = msg[-11:]
 
-    if len(msg) != 11 and not "https" in msg:
+    if "https" not in msg:
         id = search(msg) # get the id from the link
     
     
