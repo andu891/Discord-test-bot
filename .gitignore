@@ -3,3 +3,4 @@ __pycache__
 .env
 discord.log
 vars.json
+.vscode/settings.json

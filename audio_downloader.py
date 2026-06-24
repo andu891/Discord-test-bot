@@ -1,8 +1,7 @@
-
 from yt_dlp import YoutubeDL
 import logging
 
-def download_audio(url):
+async def download_audio(url):
     url = [url]
     id = url[0][-11:]
     print(id)
@@ -19,3 +18,4 @@ def download_audio(url):
 
     with YoutubeDL(yl_opts) as ydl: # download from the link
         ydl.download(url)
+    return 
