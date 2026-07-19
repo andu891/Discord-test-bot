@@ -16,8 +16,9 @@ import asyncio
 
 
 load_dotenv()
+discord_token = os.getenv("DISCORD_TOKEN")
+youtube_token = os.getenv("YOUTUBE_TOKEN")
 
-token = os.getenv("DISCORD_TOKEN")
 
 handler = logging.FileHandler(filename="discord.log",encoding="utf-8",mode="w")
 intents = discord.Intents.default()
@@ -182,14 +183,14 @@ async def play(_c,*,msg:str): # Plays a song from youtube URL
     
 
     if "https" not in msg:
-        id = search(msg) # get the id from the name
+        id = search(msg,youtube_token) # get the id from the name
         if id == None:
             await _c.send("Error: Song not found")
             return
         
     
     if "&list=" in msg:
-        id = get_playlist(msg.split("&")[1].replace("list=",""))
+        id = get_playlist(msg.split("&")[1].replace("list=",""),youtube_token)
         
     
 
@@ -252,7 +253,7 @@ async def queue(_c,*,msg=1):
         out = f"Current: {os.listdir(f'./sound/songs/{music.current_song}')[0][0:-17]}\n" 
 
 
-    titles = get_title(music.queue[10*(msg-1):10*msg])
+    titles = get_title(music.queue[10*(msg-1):10*msg],youtube_token)
 
     for name in titles:
         out += f"{i}. {name}\n"

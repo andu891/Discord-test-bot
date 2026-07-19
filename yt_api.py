@@ -4,12 +4,11 @@ import requests
 
 
 load_dotenv()
-key = os.getenv("YOUTUBE_TOKEN")
 
 
 
 
-def search(name:str) -> str:
+def search(name:str,key:str) -> str:
     link = "https://www.googleapis.com/youtube/v3/search"
 
     params = {
@@ -34,7 +33,7 @@ def search(name:str) -> str:
 
 
 
-def playlist(playlist_id:str) -> list[str] :
+def playlist(playlist_id:str,key:str) -> list[str] :
 
     print(playlist_id)
 
@@ -98,7 +97,7 @@ def playlist(playlist_id:str) -> list[str] :
 
 
 ## returns titles of youtube ids
-def get_title(ids:list[str]) -> list[str]:
+def get_title(ids:list[str],key:str) -> list[str]:
     link="https://www.googleapis.com/youtube/v3/videos"
     names = []
     while len(ids):
