@@ -339,4 +339,4 @@ async def poll(_c,*,question:str):
 
 
 
-bot.run(token, log_handler=handler, log_level=logging.DEBUG)
+bot.run(discord_token, log_handler=handler, log_level=logging.DEBUG)
