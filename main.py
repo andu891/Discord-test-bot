@@ -141,7 +141,7 @@ class music_player(commands.Cog):
             
             ##play song
             audio = discord.FFmpegPCMAudio(source=path, executable="sound/ffmpeg/bin/ffmpeg.exe")
-            self.voice_client.play(audio,signal_type="music", after=lambda x: __after__(self.current_song))
+            self.voice_client.play(audio,signal_type="music", after=lambda x:__after__(self.current_song))
 
             ##download next 2 songs
             for song in self.queue[0:2]:
@@ -151,7 +151,8 @@ class music_player(commands.Cog):
 
 
             ##Change presence
-            activity = discord.Activity(type=discord.ActivityType.listening, name=f"Playing {os.listdir(f'./sound/songs/{self.current_song}')[0][:-18]}")
+            song_name = f"{os.listdir(f'./sound/songs/{self.current_song}')[0][:-18]}"
+            activity = discord.Activity(type=discord.ActivityType.playing, name=song_name,details=song_name)
             await bot.change_presence(activity=activity)
 
 
