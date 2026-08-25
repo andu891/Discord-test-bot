@@ -124,11 +124,11 @@ class music_player(commands.Cog):
 
 
             self.current_song = self.queue.pop(0)
-            if self.current_song not in os.listdir(f"./sound/songs"):
+            if self.current_song not in os.listdir(f"./sound"):
                     download = await download_audio(self.current_song)
                     if type(download) == LookupError:
                         stop
-            path = f"sound/songs/{self.current_song}/" + os.listdir(f"./sound/songs/{self.current_song}")[0] # the path of the song file
+            path = f"sound/songs/{self.current_song}/" + os.listdir(f"./sound/{self.current_song}")[0] # the path of the song file
 
             
             
@@ -144,7 +144,7 @@ class music_player(commands.Cog):
 
 
             ##Change presence
-            song_name = f"{os.listdir(f'./sound/songs/{self.current_song}')[0][:-18]}"
+            song_name = f"{os.listdir(f'./sound/{self.current_song}')[0][:-18]}"
             activity = discord.Activity(type=discord.ActivityType.playing, name=song_name,details=song_name)
             await bot.change_presence(activity=activity)
 
@@ -244,7 +244,7 @@ async def queue(_c,*,msg=1):
     out = ""
     i=10*(msg-1) + 1
     if msg == 1:
-        out = f"Current: {os.listdir(f'./sound/songs/{music.current_song}')[0][0:-17]}\n" 
+        out = f"Current: {os.listdir(f'./sound/{music.current_song}')[0][0:-17]}\n" 
 
 
     titles = get_title(music.queue[10*(msg-1):10*msg],youtube_token)
@@ -310,17 +310,7 @@ async def leave(_c):# leaves vc
 @bot.command()
 async def hello(_c): # greets author
     await _c.send(f"Hello {_c.author.mention}!")
-
-
-@bot.command()
-async def create_guild(_c):
-    guild = await discord.Client.create_guild(self=bot,name="test_server")
-    guild: discord.Guild
-    invite = await guild.channels[0].create_invite()
-    await get_owner().send(invite)
-    
-
-
+6
 
 @bot.command() # creates a poll with reactions
 async def poll(_c,*,question:str):
