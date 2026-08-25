@@ -88,15 +88,6 @@ async def on_message(message): # 🗿
         await owner.send(f"{message.author}: {text}")
     await bot.process_commands(message)
 
-    
-@bot.event
-async def on_scheduled_event_update(before,after): # Features: Event start message 
-
-    if not before.status == EventStatus.active and after.status == EventStatus.active: # when the event has just started find general and send the message
-        general_channel_name = get_vars()["general"]
-        general_channel = list(filter(lambda channel: channel.name == general_channel_name,after.guild.channels))[0]
-        await general_channel.send(f"{after.guild.default_role} {after.name} on alustanud!!!")
-
 ##### Cogs
 
 class music_player(commands.Cog):
@@ -111,7 +102,7 @@ class music_player(commands.Cog):
     def cog_unload(self):
         self.player.cancel()
 
-
+    # music loop 
 
     @tasks.loop(seconds=1.0)
     async def player(self):
@@ -134,7 +125,9 @@ class music_player(commands.Cog):
 
             self.current_song = self.queue.pop(0)
             if self.current_song not in os.listdir(f"./sound/songs"):
-                    await download_audio(self.current_song)
+                    download = await download_audio(self.current_song)
+                    if type(download) == LookupError:
+                        stop
             path = f"sound/songs/{self.current_song}/" + os.listdir(f"./sound/songs/{self.current_song}")[0] # the path of the song file
 
             

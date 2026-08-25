@@ -1,11 +1,11 @@
 from yt_dlp import YoutubeDL
-import logging
+
+
 
 async def download_audio(url):
     url = [url]
     id = url[0][-11:]
     print(id)
-
     yl_opts= {
         "format":"m4a/bestaudio/best",
         "paths":{"home":f"./sound/songs/{id}"}, # folder where the file will be downloaded to 
@@ -14,8 +14,21 @@ async def download_audio(url):
         }],
         "ffmpeg_location":"./sound/ffmpeg/bin", # audio processor location
         "windowsfilenames":True,
+        "cookiesfrombrowser":("firefox",), # extracts cookies from browser
+        "extractor_args":{
+            "youtube":{
+                "player_client":["default","web_embedded"]
+            }
+        },
+        "remote_components":["ejs:github"] # fix for youtube challenges
+
     }
 
     with YoutubeDL(yl_opts) as ydl: # download from the link
-        ydl.download(url)
+        try:
+            ydl.download(url)
+        except:
+            return LookupError
     return 
+
+

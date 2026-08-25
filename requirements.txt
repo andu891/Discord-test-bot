@@ -3,3 +3,4 @@ davey
 PyNaCl
 python-dotenv
 yt-dlp
+requests
