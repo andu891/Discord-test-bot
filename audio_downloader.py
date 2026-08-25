@@ -14,7 +14,7 @@ async def download_audio(url):
         }],
         "ffmpeg_location":"./sound/ffmpeg/bin", # audio processor location
         "windowsfilenames":True,
-        "cookiesfrombrowser":("chrome",), # extracts cookies from browser
+        #"cookiesfrombrowser":("chrome",), # extracts cookies from browser
         "extractor_args":{
             "youtube":{
                 "player_client":["default","web_embedded"]
