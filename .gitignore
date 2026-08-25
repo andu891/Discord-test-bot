@@ -6,3 +6,4 @@ vars.json
 .vscode/settings.json
 *.log
 /sound
+*.log
