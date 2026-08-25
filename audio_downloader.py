@@ -20,7 +20,8 @@ async def download_audio(url):
                 "player_client":["default","web_embedded"]
             }
         },
-        "remote_components":["ejs:github"] # fix for youtube challenges
+        "remote_components":["ejs:github"], # fix for youtube challenges
+        "fixup":"never"
 
     }
 
