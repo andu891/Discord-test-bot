@@ -12,7 +12,6 @@ async def download_audio(url):
         "postprocessors":[{ # audio processor (FFmpeg) 
             "key":"FFmpegExtractAudio"
         }],
-        "ffmpeg_location":"./sound/ffmpeg/bin", # audio processor location
         "windowsfilenames":True,
         #"cookiesfrombrowser":("chrome",), # extracts cookies from browser
         "extractor_args":{
