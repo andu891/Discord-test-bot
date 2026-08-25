@@ -133,7 +133,7 @@ class music_player(commands.Cog):
             
             
             ##play song
-            audio = discord.FFmpegPCMAudio(source=path, executable="sound/ffmpeg/bin/ffmpeg.exe")
+            audio = discord.FFmpegPCMAudio(source=path)
             self.voice_client.play(audio,signal_type="music", after=lambda x:__after__(self.current_song))
 
             ##download next 2 songs
