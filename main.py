@@ -128,7 +128,7 @@ class music_player(commands.Cog):
                     download = await download_audio(self.current_song)
                     if type(download) == LookupError:
                         stop
-            path = f"sound/songs/{self.current_song}/" + os.listdir(f"./sound/{self.current_song}")[0] # the path of the song file
+            path = f"sound/{self.current_song}/" + os.listdir(f"./sound/{self.current_song}")[0] # the path of the song file
 
             
             
@@ -138,7 +138,7 @@ class music_player(commands.Cog):
 
             ##download next 2 songs
             for song in self.queue[0:2]:
-                if song not in os.listdir(f"./sound/songs"):
+                if song not in os.listdir(f"./sound"):
                     asyncio.create_task(download_audio(song))
                     
 
@@ -310,7 +310,7 @@ async def leave(_c):# leaves vc
 @bot.command()
 async def hello(_c): # greets author
     await _c.send(f"Hello {_c.author.mention}!")
-6
+
 
 @bot.command() # creates a poll with reactions
 async def poll(_c,*,question:str):
