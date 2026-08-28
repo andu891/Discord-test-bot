@@ -13,7 +13,6 @@ async def download_audio(url):
             "key":"FFmpegExtractAudio"
         }],
         "windowsfilenames":True,
-        #"cookiesfrombrowser":("chrome",), # extracts cookies from browser
         "extractor_args":{
             "youtube":{
                 "player_client":["default","web_embedded"]

@@ -31,7 +31,7 @@ intents.guild_scheduled_events = True
 bot = commands.Bot(command_prefix="a!",intents=intents)
 
 
-### helpers
+###### helpers
 def get_vars() -> dict:
     with open("vars.json", "r") as file:
         data = json.load(file)
@@ -52,22 +52,19 @@ async def report_error( error) -> None:
 
     
 async def get_owner() -> discord.user:
-    id = get_vars()["owner_id"]
-    return await discord.Client.fetch_user(bot,id)
+    info = await bot.application_info()
+    return info.owner
 
 
 
 
-### Events 
+###### Events 
 @bot.event
 async def on_ready():
     print(f"We are ready, {bot.user.name}")
-    info = await discord.Client.application_info(bot)
-    set_vars({"owner_id":info.owner.id,"loop":False})
     global music
     music = music_player()
-    
-    
+    await channel_shuffler()
     
 @bot.event
 async def on_message(message): # 🗿
@@ -88,7 +85,7 @@ async def on_message(message): # 🗿
         await owner.send(f"{message.author}: {text}")
     await bot.process_commands(message)
 
-##### Cogs
+###### Cogs
 
 class music_player(commands.Cog):
     def __init__(self):
@@ -152,9 +149,13 @@ class music_player(commands.Cog):
     @player.before_loop
     async def before_player(self):
         await bot.wait_until_ready()
-        
-        
 
+###### loops
+
+#@tasks.loop(seconds=5)
+async def channel_shuffler():
+    guild = bot.get_guild(1488208728732991520)
+    print(guild.channels)
 
 ###### Commands
 @bot.command()
