@@ -1,6 +1,5 @@
 from discord.ext import commands
 from dotenv import load_dotenv
-from discord import EventStatus
 from random import randint
 from random import shuffle as shuffle_list
 from audio_downloader import download_audio
@@ -64,7 +63,7 @@ async def on_ready():
     print(f"We are ready, {bot.user.name}")
     global music
     music = music_player()
-    await channel_shuffler()
+    channel_shuffler.start(bot.get_guild(1488208728732991520))
     
 @bot.event
 async def on_message(message): # 🗿
@@ -151,11 +150,14 @@ class music_player(commands.Cog):
         await bot.wait_until_ready()
 
 ###### loops
+@tasks.loop(hours=24)
+async def channel_shuffler(guild:discord.Guild):
+        for category in guild.categories:
+            for channel in category.channels:
+                await asyncio.sleep(2400)
+                await channel.edit(position=randint(0,len(category.channels)-1))
+        
 
-#@tasks.loop(seconds=5)
-async def channel_shuffler():
-    guild = bot.get_guild(1488208728732991520)
-    print(guild.channels)
 
 ###### Commands
 @bot.command()
