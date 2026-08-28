@@ -63,7 +63,7 @@ async def on_ready():
     print(f"We are ready, {bot.user.name}")
     global music
     music = music_player()
-    channel_shuffler.start(bot.get_guild(1488208728732991520))
+    channel_shuffler.start(bot.get_guild(1212745809351811072))
     
 @bot.event
 async def on_message(message): # 🗿
