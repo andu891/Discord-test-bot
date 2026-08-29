@@ -149,7 +149,6 @@ class music_player(commands.Cog):
     async def before_player(self):
         await bot.wait_until_ready()
 
-###### loops
 async def channel_shuffler(guild:discord.Guild):
         while True:
             for category in guild.categories:
@@ -157,7 +156,7 @@ async def channel_shuffler(guild:discord.Guild):
                     if channel.name != "general":
                         await asyncio.sleep(300)
                         print(channel.name)
-                        await channel.edit(position=randint(1,len(category.channels)-1))
+                        await channel.edit(position=randint(2,len(category.channels)-1))
         
 
 
