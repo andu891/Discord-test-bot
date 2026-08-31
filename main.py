@@ -1,7 +1,7 @@
 from discord.ext import commands
 from dotenv import load_dotenv
-from random import randint
-from random import shuffle as shuffle_list
+from random import randint, shuffle as shuffle_list, choice
+
 from audio_downloader import download_audio
 from discord.ext import tasks, commands
 from yt_api import search, playlist as get_playlist, get_title
@@ -150,13 +150,14 @@ class music_player(commands.Cog):
         await bot.wait_until_ready()
 
 async def channel_shuffler(guild:discord.Guild):
+        
         while True:
-            for category in guild.categories:
-                for channel in category.channels:
-                    if channel.name != "general":
-                        await asyncio.sleep(300)
-                        print(channel.name)
-                        await channel.edit(position=randint(2,len(category.channels)-1))
+            category = choice(guild.categories)
+            channel = choice(category.channels)
+            if channel.name != "general":
+                await asyncio.sleep(300)
+                print(channel.name)
+                await channel.edit(position=randint(2,len(category.channels)-1))
         
 
 
