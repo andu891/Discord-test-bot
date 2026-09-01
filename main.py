@@ -146,7 +146,7 @@ class music_player(commands.Cog):
     async def before_player(self):
         await bot.wait_until_ready()
 
-@tasks.loop(seconds=2)
+@tasks.loop(seconds=60)
 async def channel_shuffler(guild:discord.Guild):
         category = choice(guild.categories)
         channel = None
