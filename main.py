@@ -63,7 +63,7 @@ async def on_ready():
     print(f"We are ready, {bot.user.name}")
     global music
     music = music_player()
-    channel_shuffler.start(bot.get_guild(1212745809351811072))  
+    channel_shuffler.start(bot.get_guild(1488208728732991520))  
     
 @bot.event
 async def on_message(message): # 🗿
@@ -146,17 +146,25 @@ class music_player(commands.Cog):
     async def before_player(self):
         await bot.wait_until_ready()
 
-@tasks.loop(seconds=300)
+@tasks.loop(seconds=2)
 async def channel_shuffler(guild:discord.Guild):
-        
         category = choice(guild.categories)
-        if len(category.channels) < 3:
+        channel = None
+        after_channel = None
+
+
+        if len(category.channels) < 2:
             await channel_shuffler(guild)
             return
-        channel = choice(category.channels)
-        if channel.name != "general":
+        
+        while channel == after_channel:
+            channel = choice(category.channels)
+            after_channel  = choice(category.channels)
+
+        
+        if "general" not in [channel.name,after_channel.name]:
             print(channel.name)
-            await channel.edit(position=randint(2,len(category.channels)-1))
+            await channel.move(after=after_channel)
         
 
 
