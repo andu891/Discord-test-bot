@@ -63,7 +63,7 @@ async def on_ready():
     print(f"We are ready, {bot.user.name}")
     global music
     music = music_player()
-    asyncio.create_task(channel_shuffler(bot.get_guild(1212745809351811072)))
+    channel_shuffler.start(bot.get_guild(1212745809351811072))  
     
 @bot.event
 async def on_message(message): # 🗿
@@ -109,9 +109,6 @@ class music_player(commands.Cog):
 
         if bot.voice_clients:
             self.voice_client = bot.voice_clients[0]
-
-        if not bot.voice_clients or not self.voice_client.is_playing():# if not doing anything clear presence
-            await bot.change_presence()
         
         if self.voice_client and not self.voice_client.is_playing() and not self.voice_client.is_paused() and self.play and self.queue: # if not playing song and theres a queue play!
             
@@ -149,15 +146,17 @@ class music_player(commands.Cog):
     async def before_player(self):
         await bot.wait_until_ready()
 
+@tasks.loop(seconds=300)
 async def channel_shuffler(guild:discord.Guild):
         
-        while True:
-            category = choice(guild.categories)
-            channel = choice(category.channels)
-            if channel.name != "general":
-                await asyncio.sleep(300)
-                print(channel.name)
-                await channel.edit(position=randint(2,len(category.channels)-1))
+        category = choice(guild.categories)
+        if len(category.channels) < 3:
+            await channel_shuffler(guild)
+            return
+        channel = choice(category.channels)
+        if channel.name != "general":
+            print(channel.name)
+            await channel.edit(position=randint(2,len(category.channels)-1))
         
 
 
