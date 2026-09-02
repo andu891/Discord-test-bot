@@ -17,7 +17,8 @@ import asyncio
 load_dotenv()
 discord_token = os.getenv("DISCORD_TOKEN")
 youtube_token = os.getenv("YOUTUBE_TOKEN")
-server_id = os.getenv("SERVER_ID")
+server_id = int(os.getenv("SERVER_ID"))
+
 
 
 handler = logging.FileHandler(filename="discord.log",encoding="utf-8",mode="w")
@@ -64,7 +65,7 @@ async def on_ready():
     print(f"We are ready, {bot.user.name}")
     global music
     music = music_player()
-    channel_shuffler.start(bot.get_guild(server_id))  
+    channel_shuffler.start(bot.get_guild(server_id))
     
 @bot.event
 async def on_message(message): # 🗿
